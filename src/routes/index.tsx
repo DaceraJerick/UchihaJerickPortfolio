@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Calendar,
@@ -52,6 +53,18 @@ function Panel({ children, className = "", id }: { children: React.ReactNode; cl
 }
 
 function HomePage() {
+  useEffect(() => {
+    const el = document.createElement("script");
+    el.src = "https://www.tuqlas.com/chatbot.js";
+    el.setAttribute("data-key", "tq_live_2ea9f89c83493841309ad33cb4991dae23341a4b");
+    el.setAttribute("data-api", "https://www.tuqlas.com");
+    el.defer = true;
+    document.body.appendChild(el);
+    return () => {
+      el.remove();
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
