@@ -54,7 +54,7 @@ export function ContactFlow() {
   const handleSendTelegram = () => {
     const message = `Hello Jerick! I would like to schedule a call.\n\n📅 Date: ${date ? format(date, "PPPP") : "Not selected"}\n🕒 Time: ${time}\n👤 Name: ${name}\n📧 Email: ${email}`;
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://t.me/+639984861498?text=${encodedMessage}`, "_blank");
+    window.open(`https://t.me/JerickUchiha?text=${encodedMessage}`, "_blank");
   };
 
   return (
