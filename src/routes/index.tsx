@@ -20,6 +20,7 @@ import { techStack, projects, certifications } from "@/data/portfolio";
 import jerickDark from "@/assets/jerick-dark.png";
 import jerickLight from "@/assets/jerick-light.jpg";
 import { ContactFlow } from "@/components/ContactFlow";
+import { Recommendations } from "@/components/Recommendations";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -273,13 +274,9 @@ function HomePage() {
           </FadeIn>
 
           <FadeIn delay={80}>
-            <Panel>
+            <Panel className="h-full">
               <SectionTitle title="Recommendations" />
-              <div className="p-5">
-                <div className="rounded-xl border border-dashed border-border bg-background/40 p-6 text-center text-sm text-muted-foreground">
-                  Recommendations coming soon.
-                </div>
-              </div>
+              <Recommendations />
             </Panel>
           </FadeIn>
         </div>

@@ -69,3 +69,22 @@ export const projects = [
     tags: ["Vue.js", "Express", "MySQL"],
   },
 ] as const;
+
+export const recommendations = [
+  {
+    content: "Jerick is the one we rely on when it comes to coding. He helps the team understand the system and makes sure our project works properly. He’s easy to work with and very responsible.",
+    author: "Classmate",
+  },
+  {
+    content: "During our project, Jerick handled most of the development and made sure everything was functional. He listens to suggestions and improves the system step by step.",
+    author: "Project Teammate",
+  },
+  {
+    content: "A dedicated student developer who builds functional and user-friendly systems.",
+    author: "Student Developer",
+  },
+  {
+    content: "Jerick is always willing to learn new technologies and apply them in his projects. His passion for development is clear in his work.",
+    author: "Classmate",
+  },
+] as const;
