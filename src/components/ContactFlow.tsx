@@ -58,7 +58,7 @@ export function ContactFlow() {
   };
 
   return (
-    <div className="relative min-h-[300px] w-full overflow-hidden">
+    <div className="relative min-h-[350px] w-full">
       {/* Header for back button if not in initial step */}
       {step !== "initial" && (
         <div className="mb-4 flex items-center">
@@ -139,7 +139,7 @@ export function ContactFlow() {
 
       {/* Step 2: Date */}
       {step === "date" && (
-        <div className="flex flex-col items-center animate-in fade-in slide-in-from-right-2 duration-300">
+        <div className="flex flex-col items-center animate-in fade-in duration-300">
           <Calendar
             mode="single"
             selected={date}
@@ -160,7 +160,7 @@ export function ContactFlow() {
 
       {/* Step 3: Time */}
       {step === "time" && (
-        <div className="animate-in fade-in slide-in-from-right-2 duration-300">
+        <div className="animate-in fade-in duration-300">
           <div className="mb-4 flex items-center gap-2 text-sm font-medium text-foreground">
             <Clock className="h-4 w-4 text-primary" />
             {date && format(date, "EEEE, MMMM do")}
@@ -197,15 +197,17 @@ export function ContactFlow() {
 
       {/* Step 4: Details */}
       {step === "details" && (
-        <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
+        <div className="space-y-4 animate-in fade-in duration-300 relative z-20">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-xs uppercase tracking-wider text-muted-foreground">Full Name</Label>
             <Input
               id="name"
+              type="text"
+              autoFocus
               placeholder="John Doe"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="bg-background/50"
+              className="bg-background/50 relative z-30"
             />
           </div>
           <div className="space-y-2">
@@ -216,7 +218,7 @@ export function ContactFlow() {
               placeholder="john@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-background/50"
+              className="bg-background/50 relative z-30"
             />
           </div>
           <Button
