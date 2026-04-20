@@ -5,7 +5,7 @@ export const techStack = [
   },
   {
     category: "Backend",
-    items: ["Node.js", "Supabase", "MySQL", "Express.js"],
+    items: ["Node.js", "Supabase", "MySQL", "Express.js", "PHP"],
   },
   {
     category: "AI & Machine Learning",
