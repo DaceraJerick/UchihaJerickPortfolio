@@ -15,6 +15,8 @@ import {
 import { FadeIn } from "@/components/FadeIn";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { techStack, projects, certifications } from "@/data/portfolio";
+import jerickDark from "@/assets/jerick-dark.png";
 import jerickLight from "@/assets/jerick-light.jpg";
 import { ContactFlow } from "@/components/ContactFlow";
 import { Recommendations } from "@/components/Recommendations";
