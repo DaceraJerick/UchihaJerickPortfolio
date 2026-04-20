@@ -15,12 +15,11 @@ import {
 import { FadeIn } from "@/components/FadeIn";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { TikTokIcon } from "@/components/SocialLinks";
-import { techStack, projects, certifications } from "@/data/portfolio";
-import jerickDark from "@/assets/jerick-dark.png";
 import jerickLight from "@/assets/jerick-light.jpg";
 import { ContactFlow } from "@/components/ContactFlow";
 import { Recommendations } from "@/components/Recommendations";
+import { TikTokIcon, TelegramIcon, WhatsAppIcon, DiscordIcon } from "@/components/SocialLinks";
+import { Instagram, Linkedin } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -307,6 +306,11 @@ function HomePage() {
                   <SocialRow Icon={Github} label="GitHub" href="https://github.com/DaceraJerick" />
                   <SocialRow Icon={Facebook} label="Facebook" href="https://www.facebook.com/dacera.jerick" />
                   <SocialRow Icon={TikTokIcon} label="TikTok" href="https://tiktok.com/@jerick_28dacera" />
+                  <SocialRow Icon={Instagram} label="Instagram" href="#" />
+                  <SocialRow Icon={TelegramIcon} label="Telegram" href="#" />
+                  <SocialRow Icon={WhatsAppIcon} label="WhatsApp" href="#" />
+                  <SocialRow Icon={DiscordIcon} label="Discord" href="#" />
+                  <SocialRow Icon={Linkedin} label="LinkedIn" href="#" />
                 </div>
               </div>
             </Panel>
