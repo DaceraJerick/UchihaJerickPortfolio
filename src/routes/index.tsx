@@ -311,7 +311,7 @@ function HomePage() {
                   <SocialRow Icon={TikTokIcon} label="TikTok" href="https://tiktok.com/@jerick_28dacera" />
                   <SocialRow Icon={Instagram} label="Instagram" href="https://www.instagram.com/jerickinstagrann?igsh=ejkzcDJwbWdmcDZm" />
                   <SocialRow Icon={TelegramIcon} label="Telegram" href="https://t.me/JerickUchiha" />
-                  <SocialRow Icon={WhatsAppIcon} label="WhatsApp" href="https://wa.me/639984861498" />
+                  <SocialRow Icon={WhatsAppIcon} label="WhatsApp" href="https://api.whatsapp.com/send?phone=639984861498" />
                   <SocialRow Icon={DiscordIcon} label="Discord" href="https://discord.com/users/uchihajerick" />
                   <SocialRow Icon={Linkedin} label="LinkedIn" href="https://www.linkedin.com/in/jerick-dacera-010972301/" />
                 </div>
