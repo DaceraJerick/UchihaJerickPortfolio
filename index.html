@@ -24,33 +24,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script defer src="https://www.tuqlas.com/chatbot.js" data-key="tq_live_2ea9f89c83493841309ad33cb4991dae23341a4b" data-api="https://www.tuqlas.com"></script>
-    <script>
-      // Fix TuqLas Chatbot bugs (Close button missing on desktop, and rendering lag)
-      document.addEventListener("DOMContentLoaded", () => {
-        const observer = new MutationObserver(() => {
-          const closeBtn = document.getElementById('tuqlas-header-close');
-          const toggleBtn = document.getElementById('tuqlas-btn');
-          const win = document.getElementById('tuqlas-win');
-          
-          if (closeBtn && toggleBtn && win && !closeBtn.dataset.patched) {
-            closeBtn.dataset.patched = 'true';
-            
-            // Force the close button to be visible on desktop
-            closeBtn.style.setProperty('display', 'block', 'important');
-            
-            // Override the close button behavior to actually close the chat wrapper
-            closeBtn.addEventListener('click', () => {
-              if (win.style.display !== 'none') toggleBtn.click();
-            });
-
-            // Prevent heavy CSS reflows (lag) when text is streaming
-            win.style.setProperty('contain', 'content', 'important');
-            win.style.setProperty('will-change', 'transform', 'important');
-          }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-      });
-    </script>
   </body>
 </html>
