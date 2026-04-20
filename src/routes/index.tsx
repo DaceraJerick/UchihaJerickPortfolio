@@ -110,6 +110,7 @@ function HomePage() {
             <div className="flex flex-wrap gap-2 border-t border-border/70 bg-background/30 px-5 py-3">
               <button
                 type="button"
+                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
                 className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-all hover:border-primary/40 hover:text-primary"
               >
                 <Calendar className="h-3.5 w-3.5" />
@@ -308,10 +309,10 @@ function HomePage() {
                   <SocialRow Icon={Github} label="GitHub" href="https://github.com/DaceraJerick" />
                   <SocialRow Icon={Facebook} label="Facebook" href="https://www.facebook.com/dacera.jerick" />
                   <SocialRow Icon={TikTokIcon} label="TikTok" href="https://tiktok.com/@jerick_28dacera" />
-                  <SocialRow Icon={Instagram} label="Instagram" href="#" />
-                  <SocialRow Icon={TelegramIcon} label="Telegram" href="#" />
+                  <SocialRow Icon={Instagram} label="Instagram" href="https://www.instagram.com/jerickinstagrann?igsh=ejkzcDJwbWdmcDZm" />
+                  <SocialRow Icon={TelegramIcon} label="Telegram" href="https://t.me/JerickUchiha" />
                   <SocialRow Icon={WhatsAppIcon} label="WhatsApp" href="#" />
-                  <SocialRow Icon={DiscordIcon} label="Discord" href="#" />
+                  <SocialRow Icon={DiscordIcon} label="Discord" href="https://discord.com/users/uchihajerick" />
                   <SocialRow Icon={Linkedin} label="LinkedIn" href="#" />
                 </div>
               </div>
@@ -319,7 +320,7 @@ function HomePage() {
           </FadeIn>
 
           <FadeIn delay={120}>
-            <Panel className="h-full">
+            <Panel id="contact" className="h-full">
               <div className="p-5">
                 <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Get in touch

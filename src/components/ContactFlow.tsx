@@ -197,17 +197,16 @@ export function ContactFlow() {
 
       {/* Step 4: Details */}
       {step === "details" && (
-        <div className="space-y-4 animate-in fade-in duration-300 relative z-20">
+        <div className="space-y-4 animate-in fade-in duration-300">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-xs uppercase tracking-wider text-muted-foreground">Full Name</Label>
             <Input
               id="name"
               type="text"
-              autoFocus
               placeholder="John Doe"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="bg-background/50 relative z-30"
+              className="bg-background/50"
             />
           </div>
           <div className="space-y-2">
@@ -218,7 +217,7 @@ export function ContactFlow() {
               placeholder="john@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-background/50 relative z-30"
+              className="bg-background/50"
             />
           </div>
           <Button
