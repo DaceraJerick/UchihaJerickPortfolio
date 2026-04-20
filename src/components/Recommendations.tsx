@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { recommendations } from "../data/portfolio";
-import { Quote } from "lucide-react";
 import { cn } from "../lib/utils";
 
 export function Recommendations() {
@@ -15,49 +14,43 @@ export function Recommendations() {
   }, []);
 
   return (
-    <div className="relative p-6 pt-8 min-h-[280px] flex flex-col items-center justify-center text-center overflow-hidden">
-      {/* Background Decorative Element */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Quote Icon */}
-      <div className="mb-6 opacity-20">
-        <Quote className="w-10 h-10 text-primary" />
-      </div>
-
+    <div className="relative p-5 min-h-[260px] flex flex-col justify-between overflow-hidden">
       <div className="relative w-full">
         {recommendations.map((rec, index) => (
           <div
             key={index}
             className={cn(
-              "transition-all duration-700 ease-in-out flex flex-col items-center",
+              "transition-all duration-700 ease-in-out flex flex-col",
               index === activeIndex
-                ? "opacity-100 translate-y-0 relative z-10"
-                : "opacity-0 -translate-y-4 absolute inset-0 pointer-events-none z-0"
+                ? "opacity-100 translate-x-0 relative z-10"
+                : "opacity-0 translate-x-4 absolute inset-0 pointer-events-none z-0"
             )}
           >
-            <blockquote className="text-base md:text-lg font-medium leading-relaxed text-foreground/90 italic mb-6">
+            <blockquote className="text-sm md:text-base leading-relaxed text-foreground/90 font-medium mb-8">
               "{rec.content}"
             </blockquote>
 
-            <div className="flex flex-col items-center">
-              <div className="h-px w-8 bg-primary/30 mb-3" />
-              <p className="text-[10px] font-bold tracking-widest uppercase text-primary">
+            <div className="pt-4 border-t border-border/50">
+              <p className="text-sm font-semibold text-foreground">
                 {rec.author}
+              </p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">
+                {rec.author === "Project Teammate" ? "Collaborator" : "Peer Recommendation"}
               </p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Dots Indicator */}
-      <div className="flex justify-center gap-2 mt-8">
+      {/* Dots Indicator - Small left-aligned rectangles */}
+      <div className="flex justify-start gap-1.5 mt-8">
         {recommendations.map((_, index) => (
           <button
             key={index}
             onClick={() => setActiveIndex(index)}
             className={cn(
-              "h-1.5 transition-all duration-500 rounded-full",
-              index === activeIndex ? "w-6 bg-primary" : "w-1.5 bg-border hover:bg-primary/40"
+              "h-1 transition-all duration-500 rounded-px",
+              index === activeIndex ? "w-4 bg-foreground" : "w-1.5 bg-border hover:bg-muted-foreground"
             )}
             aria-label={`Go to slide ${index + 1}`}
           />
