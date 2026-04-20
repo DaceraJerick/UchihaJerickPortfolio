@@ -43,9 +43,9 @@ function SectionTitle({ title, viewAll }: { title: string; viewAll?: boolean }) 
   );
 }
 
-function Panel({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Panel({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (
-    <div className={`overflow-hidden rounded-2xl border border-border bg-card ${className}`}>
+    <div id={id} className={`overflow-hidden rounded-2xl border border-border bg-card ${className}`}>
       {children}
     </div>
   );
