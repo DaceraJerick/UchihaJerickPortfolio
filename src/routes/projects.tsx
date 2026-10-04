@@ -53,6 +53,7 @@ function ProjectsPage() {
                 status={p.status}
                 tags={[...p.tags]}
                 url={"url" in p ? p.url : undefined}
+                locked={p.locked}
               />
             ))}
           </FadeIn>

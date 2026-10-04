@@ -6,6 +6,7 @@ interface ProjectCardProps {
   status?: string;
   tags?: string[];
   url?: string;
+  locked?: boolean;
 }
 
 export function ProjectCard({
@@ -14,8 +15,9 @@ export function ProjectCard({
   status = "Coming Soon",
   tags = [],
   url,
+  locked = false,
 }: ProjectCardProps) {
-  const isLive = Boolean(url);
+  const isLive = Boolean(url) && !locked;
 
   return (
     <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/40 hover:-translate-y-1 hover:shadow-[0_0_40px_-12px_var(--cyan-glow)]">
@@ -55,7 +57,7 @@ export function ProjectCard({
         </a>
       ) : (
         <div className="flex items-center gap-1.5 text-sm text-muted-foreground/60">
-          <span>Link unavailable</span>
+          <span>{locked ? "Locked" : "Link unavailable"}</span>
           <ArrowUpRight className="h-3.5 w-3.5" />
         </div>
       )}
