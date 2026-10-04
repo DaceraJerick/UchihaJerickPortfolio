@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, GraduationCap, Sparkles, Users, Code2 } from "lucide-react";
+import { MapPin, GraduationCap, Sparkles, Users, Code2, Smartphone } from "lucide-react";
 
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -12,12 +12,12 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Get to know Dacera Jerick (Uchiha Jerick) — a 3rd-year student at NEMSU Cantilan Campus and full-stack developer based in the Philippines.",
+          "Get to know Dacera Jerick (Uchiha Jerick) — a 4th-year student at NEMSU Cantilan Campus and software and mobile developer based in the Philippines.",
       },
       { property: "og:title", content: "About — Dacera Jerick" },
       {
         property: "og:description",
-        content: "3rd-year student, full-stack developer, and team leader from Cantilan, Philippines.",
+        content: "4th-year student, software & mobile developer, and team leader from Cantilan, Philippines.",
       },
     ],
   }),
@@ -26,7 +26,8 @@ export const Route = createFileRoute("/about")({
 
 const highlights = [
   { Icon: Users, title: "Team Leader", text: "Leading group projects since my 1st year." },
-  { Icon: Code2, title: "Full-Stack Builder", text: "Web apps end-to-end — UI to database." },
+  { Icon: Code2, title: "Software Developer", text: "Web apps end-to-end — UI to database." },
+  { Icon: Smartphone, title: "Mobile Developer", text: "Cross-platform apps built with React Native." },
   { Icon: Sparkles, title: "Helper for Hire", text: "I help classmates ship — and yes, they pay me." },
 ];
 
@@ -51,7 +52,7 @@ function AboutPage() {
           <FadeIn delay={80} className="mt-10 space-y-5 text-base leading-relaxed text-foreground/90">
             <p>
               I am Dacera Jerick, widely known as Uchiha Jerick in our school. I'm currently a
-              3rd-year student at <span className="text-primary">NEMSU Cantilan Campus</span>.
+              4th-year student at <span className="text-primary">NEMSU Cantilan Campus</span>.
               Since my 1st year, I have always been the leader of our group projects.
             </p>
             <p>
@@ -70,11 +71,11 @@ function AboutPage() {
               <MapPin className="h-3 w-3 text-primary" /> Cantilan, Surigao del Sur, PH
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/40 px-3 py-1.5 text-xs text-foreground/80">
-              <GraduationCap className="h-3 w-3 text-primary" /> NEMSU Cantilan · 3rd Year
+              <GraduationCap className="h-3 w-3 text-primary" /> NEMSU Cantilan · 4th Year
             </span>
           </FadeIn>
 
-          <FadeIn delay={200} className="mt-12 grid gap-4 sm:grid-cols-3">
+          <FadeIn delay={200} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {highlights.map(({ Icon, title, text }) => (
               <div
                 key={title}

@@ -92,7 +92,7 @@ function HomePage() {
                   Cantilan, Surigao del Sur, Philippines
                 </div>
                 <div className="mt-1 text-sm text-foreground/90">
-                  Full-Stack Developer <span className="text-muted-foreground">\</span> Student
+                  Software & Mobile Developer <span className="text-muted-foreground">\</span> Student
                   <span className="text-muted-foreground"> \ </span> Uchiha Jerick
                 </div>
               </div>
@@ -101,7 +101,7 @@ function HomePage() {
               <div className="shrink-0">
                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
                   <GraduationCap className="h-3.5 w-3.5" />
-                  NEMSU Cantilan · 3rd Year
+                  NEMSU Cantilan · 4th Year
                 </div>
               </div>
             </div>
@@ -146,13 +146,14 @@ function HomePage() {
                 <p>
                   I am <span className="text-foreground">Dacera Jerick</span>, widely known as{" "}
                   <span className="text-primary">Uchiha Jerick</span> in our school. I'm currently a
-                  3rd-year student at NEMSU Cantilan Campus. Since my 1st year, I have always been
+                  4th-year student at NEMSU Cantilan Campus. Since my 1st year, I have always been
                   the leader of our group projects.
                 </p>
                 <p>
                   I also help my classmates with their projects — and yes, they pay me for it.
-                  I develop full-stack applications and websites, from the user interface all the
-                  way down to the database.
+                  I'm a software developer and mobile developer — I build full-stack web
+                  applications and cross-platform mobile apps with React Native, from the user
+                  interface all the way down to the database.
                 </p>
                 <p className="text-muted-foreground">
                   Outside of school work, I'm constantly tinkering with new frameworks, exploring
@@ -176,7 +177,7 @@ function HomePage() {
                         BS Information Technology
                       </div>
                       <div className="shrink-0 text-[11px] font-medium text-muted-foreground">
-                        3rd Year
+                        4th Year
                       </div>
                     </div>
                     <div className="mt-0.5 text-xs text-muted-foreground">
@@ -240,6 +241,7 @@ function HomePage() {
                   status={p.status}
                   tags={[...p.tags]}
                   url={"url" in p ? p.url : undefined}
+                  locked={p.locked}
                 />
               ))}
             </div>
