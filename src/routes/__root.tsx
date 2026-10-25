@@ -34,14 +34,14 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Personal portfolio of Dacera Jerick (Uchiha Jerick), a full-stack developer and 3rd-year student at NEMSU Cantilan Campus, Philippines.",
+          "Personal portfolio of Dacera Jerick (Uchiha Jerick), a software & mobile developer and 4th-year student at NEMSU Cantilan Campus, Philippines.",
       },
       { name: "author", content: "Dacera Jerick" },
       { property: "og:title", content: "Dacera Jerick — Full-Stack Developer" },
       {
         property: "og:description",
         content:
-          "Full-stack developer and student building modern web apps from Cantilan, Philippines.",
+          "Software & mobile developer and student building modern web apps from Cantilan, Philippines.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
