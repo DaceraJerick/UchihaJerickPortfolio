@@ -155,6 +155,10 @@ function HomePage() {
                   applications and cross-platform mobile apps with React Native, from the user
                   interface all the way down to the database.
                 </p>
+                <p>
+                  I now build full apps with AI-assisted tools like Claude Code, Antigravity IDE
+                  and Cursor.
+                </p>
                 <p className="text-muted-foreground">
                   Outside of school work, I'm constantly tinkering with new frameworks, exploring
                   AI tooling, and pushing myself to ship cleaner, faster software.
