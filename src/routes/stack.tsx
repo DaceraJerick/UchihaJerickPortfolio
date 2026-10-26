@@ -13,7 +13,7 @@ export const Route = createFileRoute("/stack")({
       {
         name: "description",
         content:
-          "The full tech stack Dacera Jerick uses to build full-stack web applications: React, Next.js, Vue, Node.js, Supabase, and more.",
+          "The full tech stack Dacera Jerick uses to build web, mobile, and desktop apps: React, React Native, Expo, Supabase, and more.",
       },
       { property: "og:title", content: "Tech Stack — Dacera Jerick" },
       {
@@ -40,7 +40,7 @@ function StackPage() {
             </h1>
             <p className="mt-4 max-w-2xl text-base text-muted-foreground">
               A categorized look at the languages, frameworks, and platforms I use to ship
-              full-stack web applications.
+              web, mobile, and desktop apps.
             </p>
           </FadeIn>
 
