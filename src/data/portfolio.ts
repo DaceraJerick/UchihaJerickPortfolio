@@ -1,23 +1,46 @@
 export const techStack = [
   {
     category: "Frontend",
-    items: ["JavaScript", "TypeScript", "React", "React Native", "Next.js", "Vue.js", "Tailwind CSS", "Vite"],
+    items: ["JavaScript", "TypeScript", "React", "Next.js", "Vue.js", "Tailwind CSS", "Vite"],
   },
   {
     category: "Mobile",
-    items: ["React Native", "Expo"],
+    items: ["React Native", "Expo", "EAS Build", "EAS Update"],
   },
   {
     category: "Backend",
-    items: ["Node.js", "Supabase", "MySQL", "Express.js", "PHP"],
+    items: [
+      "Node.js",
+      "Supabase",
+      "Supabase Auth",
+      "Supabase Storage",
+      "Edge Functions",
+      "PostgreSQL",
+      "Row Level Security",
+      "MySQL",
+      "Express.js",
+      "PHP",
+      "Electron",
+    ],
   },
   {
     category: "AI & Machine Learning",
-    items: ["OpenAI", "Anthropic"],
+    items: [
+      "OpenAI",
+      "Anthropic",
+      "Claude Code",
+      "Claude AI",
+      "Groq (LLM API)",
+      "AI chatbot integration",
+    ],
   },
   {
     category: "Developer Tools",
-    items: ["Git", "GitHub", "GitLab", "PyCharm", "Discord"],
+    items: ["Git", "GitHub", "GitLab", "PyCharm", "Discord", "Antigravity IDE", "Cursor", "Claude Code"],
+  },
+  {
+    category: "What I can do",
+    items: ["Build and ship a full app with AI-assisted tools (mobile + desktop + database)"],
   },
 ] as const;
 
@@ -48,13 +71,30 @@ export const certifications = [
   },
 ] as const;
 
-export const projects = [
+export interface Project {
+  title: string;
+  description: string;
+  status: string;
+  tags: readonly string[];
+  /** Live site link. */
+  url?: string;
+  /** Short line shown in the detail view, e.g. what kind of project it is. */
+  type?: string;
+  defense?: string;
+  features?: readonly string[];
+  /** Download link for an Android build. */
+  buildUrl?: string;
+  buildNote?: string;
+  /** Optional screenshot: put the file in public/projects/ and set its file name here. */
+  image?: string;
+}
+
+export const projects: readonly Project[] = [
   {
     title: "BoardEase",
     description:
       "A live full-stack web app for streamlined boarding house and rental management — built and shipped end-to-end.",
-    status: "Locked",
-    locked: true,
+    status: "Live",
     tags: ["React", "Supabase", "Tailwind"],
     url: "https://board-ease-fawn.vercel.app/",
   },
@@ -62,20 +102,49 @@ export const projects = [
     title: "EduTrack",
     description:
       "An education tracking platform that helps students and teachers monitor academic progress and stay organized.",
-    status: "Locked",
-    locked: true,
+    status: "Live",
     tags: ["React", "Vercel", "Tailwind"],
     url: "https://edutrack-bay.vercel.app/",
   },
   {
-    title: "Project Three",
+    title: "MySocorro",
     description:
-      "A collaborative platform for school project teams — task tracking, file sharing, and real-time updates.",
-    status: "Locked",
-    locked: true,
-    tags: ["Vue.js", "Express", "MySQL"],
+      "An AI-powered tourism, ferry and community app for the Municipality of Socorro, Surigao del Norte (Bucas Grande Island), with an ISLA chatbot and a desktop admin app for LGU staff.",
+    status: "Capstone",
+    type: "Mobile app + desktop admin app · BSIT capstone, NEMSU Cantilan Campus",
+    defense: "October 29, 2026",
+    features: [
+      "Tourist and resident accounts with email OTP",
+      "Tourism content and ferry information",
+      "ISLA, an AI chatbot",
+      "Business and ferry owners are residents with extra screens",
+      "Chat with businesses",
+      "Map on business pages",
+      "Home search",
+      "Desktop app for the System Administrator and LGU staff (Municipal Tourism Office, MDRRMO, Office of the Municipal Mayor), with permissions enforced in the database",
+    ],
+    tags: [
+      "React Native",
+      "Expo",
+      "TypeScript",
+      "Supabase",
+      "PostgreSQL",
+      "Row Level Security",
+      "Edge Functions",
+      "Electron",
+      "Vite",
+      "React",
+      "PayMongo (test mode)",
+      "Brevo SMTP",
+      "Groq (ISLA chatbot)",
+      "EAS Update",
+    ],
+    buildUrl:
+      "https://expo.dev/accounts/uchihajerick/projects/MySocorro/builds/061d6780-0207-42be-989b-1dde61019060",
+    buildNote: "Build link may expire.",
+    // image: "mysocorro-home.png", // add a real screenshot to public/projects/ and uncomment
   },
-] as const;
+];
 
 export const recommendations = [
   {

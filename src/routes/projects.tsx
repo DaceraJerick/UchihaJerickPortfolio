@@ -46,15 +46,7 @@ function ProjectsPage() {
 
           <FadeIn delay={80} className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((p) => (
-              <ProjectCard
-                key={p.title}
-                title={p.title}
-                description={p.description}
-                status={p.status}
-                tags={[...p.tags]}
-                url={"url" in p ? p.url : undefined}
-                locked={p.locked}
-              />
+              <ProjectCard key={p.title} project={p} />
             ))}
           </FadeIn>
         </section>

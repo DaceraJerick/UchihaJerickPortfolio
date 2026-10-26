@@ -155,6 +155,10 @@ function HomePage() {
                   applications and cross-platform mobile apps with React Native, from the user
                   interface all the way down to the database.
                 </p>
+                <p>
+                  I now build full apps with AI-assisted tools like Claude Code, Antigravity IDE
+                  and Cursor.
+                </p>
                 <p className="text-muted-foreground">
                   Outside of school work, I'm constantly tinkering with new frameworks, exploring
                   AI tooling, and pushing myself to ship cleaner, faster software.
@@ -234,15 +238,7 @@ function HomePage() {
             <SectionTitle title="Recent Projects" viewAll />
             <div className="grid gap-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((p) => (
-                <ProjectCard
-                  key={p.title}
-                  title={p.title}
-                  description={p.description}
-                  status={p.status}
-                  tags={[...p.tags]}
-                  url={"url" in p ? p.url : undefined}
-                  locked={p.locked}
-                />
+                <ProjectCard key={p.title} project={p} />
               ))}
             </div>
           </Panel>
