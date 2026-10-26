@@ -19,6 +19,7 @@ import { techStack, projects, certifications } from "@/data/portfolio";
 import jerickDark from "@/assets/jerick-dark.png";
 import jerickLight from "@/assets/jerick-light.jpg";
 import { ContactFlow } from "@/components/ContactFlow";
+import { openContactFlow } from "@/lib/contact";
 import { Recommendations } from "@/components/Recommendations";
 import { TikTokIcon, TelegramIcon, WhatsAppIcon, DiscordIcon } from "@/components/SocialLinks";
 import { Instagram, Linkedin } from "lucide-react";
@@ -110,19 +111,20 @@ function HomePage() {
             <div className="flex flex-wrap gap-2 border-t border-border/70 bg-background/30 px-5 py-3">
               <button
                 type="button"
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => openContactFlow("date")}
                 className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-all hover:border-primary/40 hover:text-primary"
               >
                 <Calendar className="h-3.5 w-3.5" />
                 Schedule a Call
               </button>
-              <a
-                href="mailto:dacerajerick38@gmail.com"
+              <button
+                type="button"
+                onClick={() => openContactFlow("email")}
                 className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-all hover:border-primary/40 hover:text-primary"
               >
                 <Mail className="h-3.5 w-3.5" />
                 Send Email
-              </a>
+              </button>
               <button
                 type="button"
                 className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-all hover:border-primary/40 hover:text-primary"
