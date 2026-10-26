@@ -1,23 +1,46 @@
 export const techStack = [
   {
     category: "Frontend",
-    items: ["JavaScript", "TypeScript", "React", "React Native", "Next.js", "Vue.js", "Tailwind CSS", "Vite"],
+    items: ["JavaScript", "TypeScript", "React", "Next.js", "Vue.js", "Tailwind CSS", "Vite"],
   },
   {
     category: "Mobile",
-    items: ["React Native", "Expo"],
+    items: ["React Native", "Expo", "EAS Build", "EAS Update"],
   },
   {
     category: "Backend",
-    items: ["Node.js", "Supabase", "MySQL", "Express.js", "PHP"],
+    items: [
+      "Node.js",
+      "Supabase",
+      "Supabase Auth",
+      "Supabase Storage",
+      "Edge Functions",
+      "PostgreSQL",
+      "Row Level Security",
+      "MySQL",
+      "Express.js",
+      "PHP",
+      "Electron",
+    ],
   },
   {
     category: "AI & Machine Learning",
-    items: ["OpenAI", "Anthropic"],
+    items: [
+      "OpenAI",
+      "Anthropic",
+      "Claude Code",
+      "Claude AI",
+      "Groq (LLM API)",
+      "AI chatbot integration",
+    ],
   },
   {
     category: "Developer Tools",
-    items: ["Git", "GitHub", "GitLab", "PyCharm", "Discord"],
+    items: ["Git", "GitHub", "GitLab", "PyCharm", "Discord", "Antigravity IDE", "Cursor", "Claude Code"],
+  },
+  {
+    category: "What I can do",
+    items: ["Build and ship a full app with AI-assisted tools (mobile + desktop + database)"],
   },
 ] as const;
 
