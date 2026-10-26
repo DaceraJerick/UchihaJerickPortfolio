@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const MAX_CARD_TAGS = 5;
+const MAX_CARD_TAGS = 2;
 
 function StatusBadge({ status }: { status: string }) {
   return (
@@ -30,21 +30,21 @@ function Tag({ children }: { children: React.ReactNode }) {
   );
 }
 
-function BuildLink({ project }: { project: Project }) {
+function BuildButton({ project }: { project: Project }) {
   if (!project.buildUrl) return null;
   return (
-    <div>
-      <Button asChild size="sm">
-        <a href={project.buildUrl} target="_blank" rel="noreferrer noopener">
-          <Download className="h-4 w-4" />
-          Download Android build
-        </a>
-      </Button>
-      {project.buildNote && (
-        <p className="mt-1.5 text-[11px] text-muted-foreground">{project.buildNote}</p>
-      )}
-    </div>
+    <Button asChild size="sm">
+      <a href={project.buildUrl} target="_blank" rel="noreferrer noopener">
+        <Download className="h-4 w-4" />
+        Download Android build
+      </a>
+    </Button>
   );
+}
+
+function BuildNote({ project }: { project: Project }) {
+  if (!project.buildUrl || !project.buildNote) return null;
+  return <p className="text-[11px] text-muted-foreground">{project.buildNote}</p>;
 }
 
 function projectImageUrl(file: string) {
@@ -77,20 +77,25 @@ export function ProjectCard({ project }: { project: Project }) {
   const { title, description, status, tags, url, features } = project;
   const hasDetails = Boolean(features?.length);
   const hasBanner = hasDetails;
-  const shownTags = tags.slice(0, MAX_CARD_TAGS);
+  const shownTags = tags.length > 4 ? tags.slice(0, MAX_CARD_TAGS) : tags;
   const hiddenCount = tags.length - shownTags.length;
 
   return (
     <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:border-primary/40 hover:-translate-y-1 hover:shadow-[0_0_40px_-12px_var(--cyan-glow)]">
-      {hasBanner && <ProjectImage project={project} className="h-44 w-full" />}
+      {hasBanner && <ProjectImage project={project} className="h-24 w-full" />}
 
       <div className="flex flex-1 flex-col p-6">
         <div className="mb-4 flex items-center justify-between">
           <StatusBadge status={status} />
+          {hasDetails && <ProjectDetails project={project} />}
         </div>
 
         <h3 className="mb-2 text-lg font-semibold text-foreground">{title}</h3>
-        <p className="mb-6 flex-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
+        <p
+          className={`flex-1 text-sm leading-relaxed text-muted-foreground ${hasDetails ? "mb-4 line-clamp-3" : "mb-6"}`}
+        >
+          {description}
+        </p>
 
         {tags.length > 0 && (
           <div className="mb-5 flex flex-wrap gap-1.5">
@@ -101,7 +106,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </div>
         )}
 
-        <div className="flex flex-col items-start gap-3">
+        <div className="flex flex-col items-start gap-2">
           {url && (
             <a
               href={url}
@@ -114,9 +119,8 @@ export function ProjectCard({ project }: { project: Project }) {
             </a>
           )}
 
-          <BuildLink project={project} />
-
-          {hasDetails && <ProjectDetails project={project} />}
+          {hasDetails && <BuildButton project={project} />}
+          {hasDetails && <BuildNote project={project} />}
         </div>
       </div>
     </div>
@@ -201,7 +205,10 @@ function ProjectDetails({ project }: { project: Project }) {
           </div>
         </div>
 
-        <BuildLink project={project} />
+        <div className="space-y-1.5">
+          <BuildButton project={project} />
+          <BuildNote project={project} />
+        </div>
 
         <p className="text-[11px] text-muted-foreground">
           This is a school capstone project.
