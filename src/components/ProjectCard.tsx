@@ -1,4 +1,4 @@
-import { ArrowUpRight, Lock } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 interface ProjectCardProps {
   title: string;
@@ -6,7 +6,6 @@ interface ProjectCardProps {
   status?: string;
   tags?: string[];
   url?: string;
-  locked?: boolean;
 }
 
 export function ProjectCard({
@@ -15,10 +14,7 @@ export function ProjectCard({
   status = "Coming Soon",
   tags = [],
   url,
-  locked = false,
 }: ProjectCardProps) {
-  const isLive = Boolean(url) && !locked;
-
   return (
     <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/40 hover:-translate-y-1 hover:shadow-[0_0_40px_-12px_var(--cyan-glow)]">
       <div className="mb-4 flex items-center justify-between">
@@ -26,7 +22,6 @@ export function ProjectCard({
           <span className="h-1.5 w-1.5 animate-pulse-glow rounded-full bg-primary" />
           {status}
         </span>
-        {!isLive && <Lock className="h-4 w-4 text-muted-foreground/50" />}
       </div>
 
       <h3 className="mb-2 text-lg font-semibold text-foreground">{title}</h3>
@@ -45,7 +40,7 @@ export function ProjectCard({
         </div>
       )}
 
-      {isLive ? (
+      {url && (
         <a
           href={url}
           target="_blank"
@@ -55,11 +50,6 @@ export function ProjectCard({
           <span>Visit live site</span>
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </a>
-      ) : (
-        <div className="flex items-center gap-1.5 text-sm text-muted-foreground/60">
-          <span>{locked ? "Locked" : "Link unavailable"}</span>
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </div>
       )}
     </div>
   );

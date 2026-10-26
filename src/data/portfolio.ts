@@ -53,8 +53,7 @@ export const projects = [
     title: "BoardEase",
     description:
       "A live full-stack web app for streamlined boarding house and rental management — built and shipped end-to-end.",
-    status: "Locked",
-    locked: true,
+    status: "Live",
     tags: ["React", "Supabase", "Tailwind"],
     url: "https://board-ease-fawn.vercel.app/",
   },
@@ -62,8 +61,7 @@ export const projects = [
     title: "EduTrack",
     description:
       "An education tracking platform that helps students and teachers monitor academic progress and stay organized.",
-    status: "Locked",
-    locked: true,
+    status: "Live",
     tags: ["React", "Vercel", "Tailwind"],
     url: "https://edutrack-bay.vercel.app/",
   },
@@ -71,8 +69,7 @@ export const projects = [
     title: "Project Three",
     description:
       "A collaborative platform for school project teams — task tracking, file sharing, and real-time updates.",
-    status: "Locked",
-    locked: true,
+    status: "Coming Soon",
     tags: ["Vue.js", "Express", "MySQL"],
   },
 ] as const;
