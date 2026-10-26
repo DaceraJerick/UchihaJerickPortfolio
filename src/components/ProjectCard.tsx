@@ -73,6 +73,38 @@ function ProjectImage({ project, className }: { project: Project; className: str
   );
 }
 
+/** Thumbnail that opens a larger floating preview (not full screen) when clicked. */
+function ScreenshotViewer({ file, title }: { file: string; title: string }) {
+  const alt = `${title} app screenshot`;
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          aria-label={`View ${alt} larger`}
+          className="shrink-0 cursor-zoom-in rounded-xl transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <img
+            src={projectImageUrl(file)}
+            alt={alt}
+            className="h-72 w-auto rounded-xl border border-border"
+            loading="lazy"
+          />
+        </button>
+      </DialogTrigger>
+      <DialogContent className="w-[min(92vw,24rem)] gap-0 p-3 pt-10">
+        <DialogTitle className="sr-only">{alt}</DialogTitle>
+        <DialogDescription className="sr-only">Larger view of the screenshot.</DialogDescription>
+        <img
+          src={projectImageUrl(file)}
+          alt={alt}
+          className="mx-auto max-h-[78vh] w-auto max-w-full rounded-lg object-contain"
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export function ProjectCard({ project }: { project: Project }) {
   const { title, description, status, tags, url, features } = project;
   const hasDetails = Boolean(features?.length);
@@ -170,13 +202,7 @@ function ProjectDetails({ project }: { project: Project }) {
         {project.images && project.images.length > 0 && (
           <div className="flex gap-3 overflow-x-auto pb-1">
             {project.images.map((file) => (
-              <img
-                key={file}
-                src={projectImageUrl(file)}
-                alt={`${title} app screenshot`}
-                className="h-72 w-auto shrink-0 rounded-xl border border-border"
-                loading="lazy"
-              />
+              <ScreenshotViewer key={file} file={file} title={title} />
             ))}
           </div>
         )}
