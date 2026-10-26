@@ -47,13 +47,18 @@ function BuildLink({ project }: { project: Project }) {
   );
 }
 
+function projectImageUrl(file: string) {
+  return `${import.meta.env.BASE_URL}projects/${file}`;
+}
+
 function ProjectImage({ project, className }: { project: Project; className: string }) {
-  if (project.image) {
+  const first = project.images?.[0];
+  if (first) {
     return (
       <img
-        src={`${import.meta.env.BASE_URL}projects/${project.image}`}
-        alt={`${project.title} screenshot`}
-        className={`${className} object-cover`}
+        src={projectImageUrl(first)}
+        alt={`${project.title} app screenshot`}
+        className={`${className} object-cover object-top`}
         loading="lazy"
       />
     );
@@ -77,7 +82,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
   return (
     <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:border-primary/40 hover:-translate-y-1 hover:shadow-[0_0_40px_-12px_var(--cyan-glow)]">
-      {hasBanner && <ProjectImage project={project} className="h-28 w-full" />}
+      {hasBanner && <ProjectImage project={project} className="h-44 w-full" />}
 
       <div className="flex flex-1 flex-col p-6">
         <div className="mb-4 flex items-center justify-between">
@@ -157,6 +162,20 @@ function ProjectDetails({ project }: { project: Project }) {
             </div>
           )}
         </dl>
+
+        {project.images && project.images.length > 0 && (
+          <div className="flex gap-3 overflow-x-auto pb-1">
+            {project.images.map((file) => (
+              <img
+                key={file}
+                src={projectImageUrl(file)}
+                alt={`${title} app screenshot`}
+                className="h-72 w-auto shrink-0 rounded-xl border border-border"
+                loading="lazy"
+              />
+            ))}
+          </div>
+        )}
 
         {features && (
           <div>

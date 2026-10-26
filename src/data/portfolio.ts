@@ -85,8 +85,8 @@ export interface Project {
   /** Download link for an Android build. */
   buildUrl?: string;
   buildNote?: string;
-  /** Optional screenshot: put the file in public/projects/ and set its file name here. */
-  image?: string;
+  /** Screenshots: files in public/projects/. The first one is also the card banner. */
+  images?: readonly string[];
 }
 
 export const projects: readonly Project[] = [
@@ -97,14 +97,6 @@ export const projects: readonly Project[] = [
     status: "Live",
     tags: ["React", "Supabase", "Tailwind"],
     url: "https://board-ease-fawn.vercel.app/",
-  },
-  {
-    title: "EduTrack",
-    description:
-      "An education tracking platform that helps students and teachers monitor academic progress and stay organized.",
-    status: "Live",
-    tags: ["React", "Vercel", "Tailwind"],
-    url: "https://edutrack-bay.vercel.app/",
   },
   {
     title: "MySocorro",
@@ -142,7 +134,15 @@ export const projects: readonly Project[] = [
     buildUrl:
       "https://expo.dev/accounts/uchihajerick/projects/MySocorro/builds/061d6780-0207-42be-989b-1dde61019060",
     buildNote: "Build link may expire.",
-    // image: "mysocorro-home.png", // add a real screenshot to public/projects/ and uncomment
+    images: ["mysocorro-home-dark.png", "mysocorro-home-light.png"],
+  },
+  {
+    title: "EduTrack",
+    description:
+      "An education tracking platform that helps students and teachers monitor academic progress and stay organized.",
+    status: "Live",
+    tags: ["React", "Vercel", "Tailwind"],
+    url: "https://edutrack-bay.vercel.app/",
   },
 ];
 
