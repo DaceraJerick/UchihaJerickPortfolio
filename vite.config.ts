@@ -6,6 +6,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // Set BASE_PATH (e.g. "/UchihaJerickPortfolio/") when hosting under a sub-path, like GitHub Pages.
+  base: process.env.BASE_PATH ?? "/",
   plugins: [
     tanstackRouter(),
     react(),
