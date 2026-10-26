@@ -9,7 +9,7 @@ export function Footer() {
             Dacera Jerick <span className="text-muted-foreground">— a.k.a. Uchiha Jerick</span>
           </div>
           <div className="mt-1 text-xs text-muted-foreground">
-            Full-Stack Developer · Cantilan, Surigao del Sur, Philippines
+            Software & Mobile Developer · Cantilan, Surigao del Sur, Philippines
           </div>
         </div>
         <div className="flex items-center gap-5 text-xs text-muted-foreground">
