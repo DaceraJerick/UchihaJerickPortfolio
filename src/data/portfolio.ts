@@ -30,13 +30,14 @@ export const techStack = [
       "Anthropic",
       "Claude Code",
       "Claude AI",
+      "Codex",
       "Groq (LLM API)",
       "AI chatbot integration",
     ],
   },
   {
     category: "Developer Tools",
-    items: ["Git", "GitHub", "GitLab", "PyCharm", "Discord", "Antigravity IDE", "Cursor", "Claude Code"],
+    items: ["Git", "GitHub", "GitLab", "PyCharm", "Discord", "Antigravity IDE", "Cursor", "Claude Code", "Codex"],
   },
   {
     category: "What I can do",
