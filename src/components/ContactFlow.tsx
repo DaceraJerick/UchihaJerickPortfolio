@@ -1,9 +1,10 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Calendar as CalendarIcon,
   Mail,
@@ -12,13 +13,22 @@ import {
   ArrowLeft,
   Clock,
   CheckCircle2,
-  Phone,
+  Loader2,
+  User,
   Send,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import {
+  CONTACT_EMAIL,
+  OPEN_CONTACT_EVENT,
+  isValidEmail,
+  sendToEmail,
+  type ContactStep,
+} from "@/lib/contact";
 
-type Step = "initial" | "date" | "time" | "details" | "confirm";
+type Step = "initial" | "date" | "time" | "details" | "confirm" | "email" | "sent";
+type SendState = "idle" | "sending" | "error";
 
 export function ContactFlow() {
   const [step, setStep] = useState<Step>("initial");
@@ -26,6 +36,20 @@ export function ContactFlow() {
   const [time, setTime] = useState<string>("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [sendState, setSendState] = useState<SendState>("idle");
+  const [sentKind, setSentKind] = useState<"call" | "email">("call");
+
+  // Buttons elsewhere on the page ("Schedule a Call", "Send Email") open a step here.
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const target = (e as CustomEvent<ContactStep>).detail;
+      setSendState("idle");
+      setStep(target === "email" ? "email" : "date");
+    };
+    window.addEventListener(OPEN_CONTACT_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_CONTACT_EVENT, onOpen);
+  }, []);
 
   const timeSlots = [
     "09:00 AM",
@@ -44,23 +68,56 @@ export function ContactFlow() {
     "04:30 PM",
   ];
 
+  const canSendEmail = name.trim() !== "" && isValidEmail(email) && message.trim() !== "";
+
   const handleBack = () => {
     if (step === "date") setStep("initial");
     else if (step === "time") setStep("date");
     else if (step === "details") setStep("time");
     else if (step === "confirm") setStep("details");
+    else if (step === "email") setStep("initial");
+    setSendState("idle");
   };
 
-  const handleSendTelegram = () => {
-    const message = `Hello Jerick! I would like to schedule a call.\n\n📅 Date: ${date ? format(date, "PPPP") : "Not selected"}\n🕒 Time: ${time}\n👤 Name: ${name}\n📧 Email: ${email}`;
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://t.me/JerickUchiha?text=${encodedMessage}`, "_blank");
+  const reset = () => {
+    setStep("initial");
+    setTime("");
+    setName("");
+    setEmail("");
+    setMessage("");
+    setSendState("idle");
+  };
+
+  const submit = async (kind: "call" | "email") => {
+    setSendState("sending");
+    try {
+      if (kind === "call") {
+        await sendToEmail({
+          name,
+          email,
+          subject: `Call request from ${name.trim()}`,
+          message: `${name.trim()} would like to schedule a call.\n\nDate: ${date ? format(date, "PPPP") : "Not selected"}\nTime: ${time}\nEmail: ${email.trim()}`,
+        });
+      } else {
+        await sendToEmail({
+          name,
+          email,
+          subject: `Message from ${name.trim()} (portfolio)`,
+          message: message.trim(),
+        });
+      }
+      setSentKind(kind);
+      setStep("sent");
+      setSendState("idle");
+    } catch {
+      setSendState("error");
+    }
   };
 
   return (
     <div className="relative min-h-[350px] w-full">
       {/* Header for back button if not in initial step */}
-      {step !== "initial" && (
+      {step !== "initial" && step !== "sent" && (
         <div className="mb-4 flex items-center">
           <Button
             variant="ghost"
@@ -75,6 +132,7 @@ export function ContactFlow() {
             {step === "time" && "Select Time"}
             {step === "details" && "Your Details"}
             {step === "confirm" && "Confirmation"}
+            {step === "email" && "Send Email"}
           </span>
         </div>
       )}
@@ -104,8 +162,9 @@ export function ContactFlow() {
             <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-1" />
           </button>
 
-          <a
-            href="mailto:dacerajerick38@gmail.com"
+          <button
+            type="button"
+            onClick={() => setStep("email")}
             className="group flex w-full items-center justify-between rounded-xl border border-border bg-background/40 p-4 text-sm text-foreground transition-all hover:border-primary/50 hover:bg-primary/5 hover:shadow-md"
           >
             <div className="flex items-center gap-4">
@@ -114,11 +173,11 @@ export function ContactFlow() {
               </div>
               <div className="text-left">
                 <div className="font-semibold text-foreground">Send Email</div>
-                <div className="text-xs text-muted-foreground">dacerajerick38@gmail.com</div>
+                <div className="text-xs text-muted-foreground">Write me a message</div>
               </div>
             </div>
             <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-1" />
-          </a>
+          </button>
 
           <button
             className="group flex w-full items-center justify-between rounded-xl border border-border bg-background/40 p-4 text-sm text-foreground transition-all hover:border-primary/50 hover:bg-primary/5 hover:shadow-md"
@@ -222,7 +281,7 @@ export function ContactFlow() {
           </div>
           <Button
             className="w-full mt-2"
-            disabled={!name || !email}
+            disabled={!name.trim() || !isValidEmail(email)}
             onClick={() => setStep("confirm")}
           >
             Review Summary
@@ -251,20 +310,152 @@ export function ContactFlow() {
               <span className="text-foreground">{time}</span>
             </div>
             <div className="flex items-center gap-3 text-sm border-t pt-3 border-border/50">
-              <Phone className="h-4 w-4 text-muted-foreground" />
+              <User className="h-4 w-4 text-muted-foreground" />
               <span className="text-foreground">{name}</span>
+            </div>
+            <div className="flex items-center gap-3 text-sm">
+              <Mail className="h-4 w-4 text-muted-foreground" />
+              <span className="break-all text-foreground">{email}</span>
             </div>
           </div>
 
-          <Button
-            className="w-full shadow-lg shadow-primary/20 bg-[#0088cc] hover:bg-[#0077b5] text-white border-none"
-            onClick={handleSendTelegram}
-          >
-            <Send className="mr-2 h-4 w-4" />
-            Send to Telegram
+          <SubmitButton
+            sending={sendState === "sending"}
+            label="Send request"
+            onClick={() => submit("call")}
+          />
+          {sendState === "error" && <SendError />}
+        </div>
+      )}
+
+      {/* Send Email */}
+      {step === "email" && (
+        <form
+          className="space-y-4 animate-in fade-in duration-300"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (canSendEmail && sendState !== "sending") submit("email");
+          }}
+        >
+          <div className="space-y-2">
+            <Label htmlFor="mail-name" className="text-xs uppercase tracking-wider text-muted-foreground">
+              Your Name
+            </Label>
+            <Input
+              id="mail-name"
+              type="text"
+              autoComplete="name"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="bg-background/50"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="mail-email" className="text-xs uppercase tracking-wider text-muted-foreground">
+              Your Email
+            </Label>
+            <Input
+              id="mail-email"
+              type="email"
+              autoComplete="email"
+              placeholder="john@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-background/50"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="mail-message" className="text-xs uppercase tracking-wider text-muted-foreground">
+              Message
+            </Label>
+            <Textarea
+              id="mail-message"
+              rows={4}
+              placeholder="How can I help?"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="bg-background/50"
+            />
+          </div>
+          <SubmitButton
+            type="submit"
+            sending={sendState === "sending"}
+            disabled={!canSendEmail}
+            label="Send message"
+          />
+          {sendState === "error" && <SendError />}
+        </form>
+      )}
+
+      {/* Sent */}
+      {step === "sent" && (
+        <div className="space-y-5 py-4 text-center animate-in fade-in duration-300">
+          <div className="flex justify-center">
+            <CheckCircle2 className="h-12 w-12 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-bold text-foreground">
+              {sentKind === "call" ? "Request sent!" : "Message sent!"}
+            </h3>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              {sentKind === "call"
+                ? "Thanks! I'll reply to your email to confirm the call."
+                : "Thanks for reaching out! I'll reply to your email soon."}
+            </p>
+          </div>
+          <Button variant="outline" size="sm" onClick={reset}>
+            Done
           </Button>
         </div>
       )}
     </div>
+  );
+}
+
+function SubmitButton({
+  sending,
+  label,
+  onClick,
+  disabled,
+  type = "button",
+}: {
+  sending: boolean;
+  label: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit";
+}) {
+  return (
+    <Button
+      type={type}
+      className="w-full shadow-lg shadow-primary/20"
+      disabled={disabled || sending}
+      onClick={onClick}
+    >
+      {sending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Sending...
+        </>
+      ) : (
+        <>
+          <Send className="mr-2 h-4 w-4" />
+          {label}
+        </>
+      )}
+    </Button>
+  );
+}
+
+function SendError() {
+  return (
+    <p role="alert" className="text-xs leading-relaxed text-destructive">
+      Sorry, that didn't send. Please try again, or email me directly at{" "}
+      <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
+        {CONTACT_EMAIL}
+      </a>
+      .
+    </p>
   );
 }
