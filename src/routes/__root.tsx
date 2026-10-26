@@ -1,4 +1,4 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute, HeadContent } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
 
@@ -30,14 +30,14 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#0a0a0a" },
-      { title: "Dacera Jerick — Full-Stack Developer" },
+      { title: "Dacera Jerick — Software & Mobile Developer" },
       {
         name: "description",
         content:
           "Personal portfolio of Dacera Jerick (Uchiha Jerick), a software & mobile developer and 4th-year student at NEMSU Cantilan Campus, Philippines.",
       },
       { name: "author", content: "Dacera Jerick" },
-      { property: "og:title", content: "Dacera Jerick — Full-Stack Developer" },
+      { property: "og:title", content: "Dacera Jerick — Software & Mobile Developer" },
       {
         property: "og:description",
         content:
@@ -51,30 +51,21 @@ export const Route = createRootRoute({
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
-      { rel: "shortcut icon", href: "/favicon.ico" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "icon", type: "image/png", href: `${import.meta.env.BASE_URL}favicon.png` },
+      { rel: "shortcut icon", href: `${import.meta.env.BASE_URL}favicon.ico` },
+      { rel: "apple-touch-icon", href: `${import.meta.env.BASE_URL}favicon.png` },
     ],
   }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
-  return <Outlet />;
+  // index.html already provides <html>/<head>/<body>, so only render head tags and the page here.
+  return (
+    <>
+      <HeadContent />
+      <Outlet />
+    </>
+  );
 }
