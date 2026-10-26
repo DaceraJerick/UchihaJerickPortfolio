@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   Calendar,
   Mail,
@@ -27,17 +27,17 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-function SectionTitle({ title, viewAll }: { title: string; viewAll?: boolean }) {
+function SectionTitle({ title, viewAllTo }: { title: string; viewAllTo?: "/stack" | "/projects" }) {
   return (
     <div className="flex items-center justify-between border-b border-border/70 px-5 py-3">
       <h2 className="text-sm font-semibold tracking-tight text-foreground">{title}</h2>
-      {viewAll && (
-        <button
-          type="button"
-          className="inline-flex items-center gap-0.5 text-xs text-muted-foreground transition-colors hover:text-primary"
+      {viewAllTo && (
+        <Link
+          to={viewAllTo}
+          className="inline-flex items-center gap-0.5 rounded-full px-2.5 py-1 text-xs text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/10 hover:text-primary hover:shadow-[0_6px_20px_-8px_var(--cyan-glow)] active:translate-y-0"
         >
           View All <ChevronRight className="h-3 w-3" />
-        </button>
+        </Link>
       )}
     </div>
   );
@@ -211,7 +211,7 @@ function HomePage() {
         {/* TECH STACK */}
         <FadeIn delay={60} className="mt-4">
           <Panel>
-            <SectionTitle title="Tech Stack" viewAll />
+            <SectionTitle title="Tech Stack" viewAllTo="/stack" />
             <div className="space-y-4 p-5">
               {techStack.map((group) => (
                 <div key={group.category}>
@@ -235,7 +235,7 @@ function HomePage() {
         {/* RECENT PROJECTS */}
         <FadeIn delay={60} className="mt-4">
           <Panel>
-            <SectionTitle title="Recent Projects" viewAll />
+            <SectionTitle title="Recent Projects" viewAllTo="/projects" />
             <div className="grid gap-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((p) => (
                 <ProjectCard key={p.title} project={p} />
@@ -248,7 +248,7 @@ function HomePage() {
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <FadeIn>
             <Panel>
-              <SectionTitle title="Recent Certifications" viewAll />
+              <SectionTitle title="Recent Certifications" />
               <div className="space-y-2 p-5">
                 {certifications.map((cert) => (
                   <a
