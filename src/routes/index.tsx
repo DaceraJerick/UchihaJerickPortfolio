@@ -20,6 +20,7 @@ import jerickDark from "@/assets/jerick-dark.png";
 import jerickLight from "@/assets/jerick-light.jpg";
 import { ContactFlow } from "@/components/ContactFlow";
 import { openContactFlow } from "@/lib/contact";
+import { IdBadge } from "@/components/IdBadge";
 import { Recommendations } from "@/components/Recommendations";
 import { TikTokIcon, TelegramIcon, WhatsAppIcon, DiscordIcon } from "@/components/SocialLinks";
 import { Instagram, Linkedin } from "lucide-react";
@@ -54,7 +55,15 @@ function Panel({ children, className = "", id }: { children: React.ReactNode; cl
 
 function HomePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative min-h-screen overflow-x-clip bg-background text-foreground">
+      {/* ID badge: hangs in the right margin on large screens, above the profile card on small ones */}
+      <div className="pointer-events-none absolute right-3 top-0 z-30 hidden xl:block">
+        <IdBadge className="[&>*]:pointer-events-auto" />
+      </div>
+      <div className="pointer-events-none flex justify-center xl:hidden">
+        <IdBadge strapLength={56} className="[&>*]:pointer-events-auto" />
+      </div>
+
       <main className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
         {/* PROFILE HEADER */}
         <FadeIn>
