@@ -7,7 +7,7 @@ const ENDPOINT = "https://api.web3forms.com/submit";
  * Web3Forms access key. It is meant to be public (it only allows sending to the email it was
  * created for), so it is safe in the repo. Get one at https://web3forms.com using CONTACT_EMAIL.
  */
-export const WEB3FORMS_ACCESS_KEY = "";
+export const WEB3FORMS_ACCESS_KEY = "819d4302-bb40-47a9-a125-12f3573d3681";
 
 /** Lets the buttons outside the contact panel open a step inside it. */
 export const OPEN_CONTACT_EVENT = "contactflow:open";
