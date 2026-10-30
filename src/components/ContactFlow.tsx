@@ -21,6 +21,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import {
   CONTACT_EMAIL,
+  mailtoHref,
   OPEN_CONTACT_EVENT,
   isValidEmail,
   sendToEmail,
@@ -88,24 +89,23 @@ export function ContactFlow() {
     setSendState("idle");
   };
 
+  const draft = (kind: "call" | "email") =>
+    kind === "call"
+      ? {
+          subject: `Call request from ${name.trim()}`,
+          message: `${name.trim()} would like to schedule a call.\n\nDate: ${date ? format(date, "PPPP") : "Not selected"}\nTime: ${time}\nEmail: ${email.trim()}`,
+        }
+      : { subject: `Message from ${name.trim()} (portfolio)`, message: message.trim() };
+
+  const fallbackHref = (kind: "call" | "email") => {
+    const { subject, message: body } = draft(kind);
+    return mailtoHref(subject, body);
+  };
+
   const submit = async (kind: "call" | "email") => {
     setSendState("sending");
     try {
-      if (kind === "call") {
-        await sendToEmail({
-          name,
-          email,
-          subject: `Call request from ${name.trim()}`,
-          message: `${name.trim()} would like to schedule a call.\n\nDate: ${date ? format(date, "PPPP") : "Not selected"}\nTime: ${time}\nEmail: ${email.trim()}`,
-        });
-      } else {
-        await sendToEmail({
-          name,
-          email,
-          subject: `Message from ${name.trim()} (portfolio)`,
-          message: message.trim(),
-        });
-      }
+      await sendToEmail({ name, email, ...draft(kind) });
       setSentKind(kind);
       setStep("sent");
       setSendState("idle");
@@ -324,7 +324,7 @@ export function ContactFlow() {
             label="Send request"
             onClick={() => submit("call")}
           />
-          {sendState === "error" && <SendError />}
+          {sendState === "error" && <SendError href={fallbackHref("call")} />}
         </div>
       )}
 
@@ -384,7 +384,7 @@ export function ContactFlow() {
             disabled={!canSendEmail}
             label="Send message"
           />
-          {sendState === "error" && <SendError />}
+          {sendState === "error" && <SendError href={fallbackHref("email")} />}
         </form>
       )}
 
@@ -448,14 +448,14 @@ function SubmitButton({
   );
 }
 
-function SendError() {
+function SendError({ href }: { href: string }) {
   return (
     <p role="alert" className="text-xs leading-relaxed text-destructive">
-      Sorry, that didn't send. Please try again, or email me directly at{" "}
-      <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
-        {CONTACT_EMAIL}
-      </a>
-      .
+      Sorry, that didn't send. Please try again, or{" "}
+      <a href={href} className="underline">
+        open it in your email app
+      </a>{" "}
+      (to {CONTACT_EMAIL}).
     </p>
   );
 }

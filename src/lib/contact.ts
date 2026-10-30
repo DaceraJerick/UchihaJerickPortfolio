@@ -1,7 +1,13 @@
 /** Where contact messages and call requests are delivered. */
 export const CONTACT_EMAIL = "dacerajerick38@gmail.com";
 
-const ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
+const ENDPOINT = "https://api.web3forms.com/submit";
+
+/**
+ * Web3Forms access key. It is meant to be public (it only allows sending to the email it was
+ * created for), so it is safe in the repo. Get one at https://web3forms.com using CONTACT_EMAIL.
+ */
+export const WEB3FORMS_ACCESS_KEY = "";
 
 /** Lets the buttons outside the contact panel open a step inside it. */
 export const OPEN_CONTACT_EVENT = "contactflow:open";
@@ -22,21 +28,34 @@ interface EmailPayload {
 }
 
 /**
- * Sends a message to CONTACT_EMAIL through FormSubmit (https://formsubmit.co).
- * The visitor's email is used as the reply-to address. Throws if it could not be sent.
+ * Builds a mailto: link with the message already filled in. Used as a fallback when sending fails,
+ * so a visitor never loses what they wrote.
+ */
+export function mailtoHref(subject: string, body: string) {
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+/**
+ * Sends a message to CONTACT_EMAIL through Web3Forms (https://web3forms.com).
+ * The visitor's email becomes the reply-to address. Throws if it could not be sent.
  *
  * The body is FormData (not JSON) on purpose: a JSON Content-Type makes the browser send a
- * CORS "preflight" request first, and FormSubmit does not answer it, so the message never left.
+ * CORS "preflight" request first, which some form services do not answer.
  */
 export async function sendToEmail({ name, email, subject, message }: EmailPayload) {
+  if (!WEB3FORMS_ACCESS_KEY) {
+    console.warn("Contact form: set WEB3FORMS_ACCESS_KEY in src/lib/contact.ts");
+    throw new Error("Contact form is not configured");
+  }
+
   const body = new FormData();
+  body.append("access_key", WEB3FORMS_ACCESS_KEY);
   body.append("name", name.trim());
   body.append("email", email.trim());
+  body.append("subject", subject);
+  body.append("from_name", "Portfolio contact form");
   body.append("message", message);
-  body.append("_subject", subject);
-  body.append("_template", "table");
-  body.append("_captcha", "false");
-  body.append("_honey", "");
+  body.append("botcheck", ""); // honeypot field: real visitors never fill it
 
   const response = await fetch(ENDPOINT, {
     method: "POST",
@@ -45,13 +64,12 @@ export async function sendToEmail({ name, email, subject, message }: EmailPayloa
   });
 
   const data = (await response.json().catch(() => null)) as {
-    success?: string | boolean;
+    success?: boolean;
     message?: string;
   } | null;
-  const ok = response.ok && (data?.success === true || data?.success === "true");
-  if (!ok) {
-    // Visible in the browser console, e.g. "This form needs Activation" on the very first message.
-    console.warn("FormSubmit did not accept the message:", response.status, data?.message ?? data);
+  if (!response.ok || data?.success !== true) {
+    // Visible in the browser console to help find out why a message was refused.
+    console.warn("Web3Forms did not accept the message:", response.status, data?.message ?? data);
     throw new Error("Could not send the message");
   }
 }
