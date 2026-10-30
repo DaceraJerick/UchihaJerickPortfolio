@@ -24,23 +24,34 @@ interface EmailPayload {
 /**
  * Sends a message to CONTACT_EMAIL through FormSubmit (https://formsubmit.co).
  * The visitor's email is used as the reply-to address. Throws if it could not be sent.
+ *
+ * The body is FormData (not JSON) on purpose: a JSON Content-Type makes the browser send a
+ * CORS "preflight" request first, and FormSubmit does not answer it, so the message never left.
  */
 export async function sendToEmail({ name, email, subject, message }: EmailPayload) {
+  const body = new FormData();
+  body.append("name", name.trim());
+  body.append("email", email.trim());
+  body.append("message", message);
+  body.append("_subject", subject);
+  body.append("_template", "table");
+  body.append("_captcha", "false");
+  body.append("_honey", "");
+
   const response = await fetch(ENDPOINT, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({
-      name: name.trim(),
-      email: email.trim(),
-      message,
-      _subject: subject,
-      _template: "table",
-      _captcha: "false",
-      _honey: "",
-    }),
+    headers: { Accept: "application/json" },
+    body,
   });
 
-  const data = (await response.json().catch(() => null)) as { success?: string | boolean } | null;
+  const data = (await response.json().catch(() => null)) as {
+    success?: string | boolean;
+    message?: string;
+  } | null;
   const ok = response.ok && (data?.success === true || data?.success === "true");
-  if (!ok) throw new Error("Could not send the message");
+  if (!ok) {
+    // Visible in the browser console, e.g. "This form needs Activation" on the very first message.
+    console.warn("FormSubmit did not accept the message:", response.status, data?.message ?? data);
+    throw new Error("Could not send the message");
+  }
 }
