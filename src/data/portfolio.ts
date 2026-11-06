@@ -37,7 +37,17 @@ export const techStack = [
   },
   {
     category: "Developer Tools",
-    items: ["Git", "GitHub", "GitLab", "PyCharm", "Discord", "Antigravity IDE", "Cursor", "Claude Code", "Codex"],
+    items: [
+      "Git",
+      "GitHub",
+      "GitLab",
+      "PyCharm",
+      "Discord",
+      "Antigravity IDE",
+      "Cursor",
+      "Claude Code",
+      "Codex",
+    ],
   },
   {
     category: "What I can do",
@@ -73,6 +83,8 @@ export const certifications = [
 ] as const;
 
 export interface Project {
+  /** URL part of the project page: /projects/<slug> */
+  slug: string;
   title: string;
   description: string;
   status: string;
@@ -88,11 +100,20 @@ export interface Project {
   buildNote?: string;
   /** Screenshots: files in public/projects/. The first one is also the card banner. */
   images?: readonly string[];
+  /** Case-study sections on the project page. Each one is shown only when it is filled in. */
+  category?: string;
+  role?: string;
+  period?: string;
+  problem?: string;
+  solution?: string;
+  contributions?: readonly { tag: string; text: string }[];
 }
 
 export const projects: readonly Project[] = [
   {
+    slug: "boardease",
     title: "BoardEase",
+    category: "Web app",
     description:
       "A live full-stack web app for streamlined boarding house and rental management — built and shipped end-to-end.",
     status: "Live",
@@ -100,7 +121,11 @@ export const projects: readonly Project[] = [
     url: "https://board-ease-fawn.vercel.app/",
   },
   {
+    slug: "mysocorro",
     title: "MySocorro",
+    category: "Mobile + desktop app",
+    role: "Lead developer",
+    period: "January – October 2026",
     description:
       "An AI-powered tourism, ferry and community app for the Municipality of Socorro, Surigao del Norte (Bucas Grande Island), with an ISLA chatbot and a desktop admin app for LGU staff.",
     status: "Capstone",
@@ -136,9 +161,31 @@ export const projects: readonly Project[] = [
       "https://expo.dev/accounts/uchihajerick/projects/MySocorro/builds/061d6780-0207-42be-989b-1dde61019060",
     buildNote: "Build link may expire.",
     images: ["mysocorro-home-dark.png", "mysocorro-home-light.png"],
+    problem:
+      "Tourists and residents of Bucas Grande Island need one place for tourism spots, ferry information and local businesses, and the LGU offices need a way to manage that information.",
+    solution:
+      "A mobile app for tourists and residents, with an AI chatbot that answers questions, plus a desktop admin app where the System Administrator and LGU offices manage the content, each with its own permissions.",
+    contributions: [
+      { tag: "Mobile", text: "Built the Android app with React Native, Expo and TypeScript." },
+      {
+        tag: "Desktop",
+        text: "Built the desktop admin app for LGU staff with Electron, Vite and React.",
+      },
+      {
+        tag: "Database",
+        text: "Set up Supabase: PostgreSQL, Auth, Storage, Edge Functions and Row Level Security permissions for each user group.",
+      },
+      { tag: "AI", text: "Added ISLA, an AI chatbot powered by the Groq LLM API." },
+      {
+        tag: "Integrations",
+        text: "Added email OTP with Brevo SMTP and PayMongo payments in test mode.",
+      },
+    ],
   },
   {
+    slug: "edutrack",
     title: "EduTrack",
+    category: "Web app",
     description:
       "An education tracking platform that helps students and teachers monitor academic progress and stay organized.",
     status: "Live",
@@ -149,11 +196,13 @@ export const projects: readonly Project[] = [
 
 export const recommendations = [
   {
-    content: "Jerick is the one we rely on when it comes to coding. He helps the team understand the system and makes sure our project works properly. He’s easy to work with and very responsible.",
+    content:
+      "Jerick is the one we rely on when it comes to coding. He helps the team understand the system and makes sure our project works properly. He’s easy to work with and very responsible.",
     author: "Classmate",
   },
   {
-    content: "During our project, Jerick handled most of the development and made sure everything was functional. He listens to suggestions and improves the system step by step.",
+    content:
+      "During our project, Jerick handled most of the development and made sure everything was functional. He listens to suggestions and improves the system step by step.",
     author: "Project Teammate",
   },
   {
@@ -161,7 +210,8 @@ export const recommendations = [
     author: "Student Developer",
   },
   {
-    content: "Jerick is always willing to learn new technologies and apply them in his projects. His passion for development is clear in his work.",
+    content:
+      "Jerick is always willing to learn new technologies and apply them in his projects. His passion for development is clear in his work.",
     author: "Classmate",
   },
 ] as const;

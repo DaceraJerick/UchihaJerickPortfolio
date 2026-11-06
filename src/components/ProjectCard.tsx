@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Download, Smartphone } from "lucide-react";
 
 import type { Project } from "@/data/portfolio";
@@ -6,14 +7,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
 const MAX_CARD_TAGS = 2;
 
-function StatusBadge({ status }: { status: string }) {
+export function StatusBadge({ status }: { status: string }) {
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-primary">
       <span className="h-1.5 w-1.5 animate-pulse-glow rounded-full bg-primary" />
@@ -22,7 +22,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function Tag({ children }: { children: React.ReactNode }) {
+export function Tag({ children }: { children: React.ReactNode }) {
   return (
     <span className="rounded-md bg-secondary/60 px-2 py-0.5 text-[10px] font-medium text-foreground/70">
       {children}
@@ -30,7 +30,7 @@ function Tag({ children }: { children: React.ReactNode }) {
   );
 }
 
-function BuildButton({ project }: { project: Project }) {
+export function BuildButton({ project }: { project: Project }) {
   if (!project.buildUrl) return null;
   return (
     <Button asChild size="sm">
@@ -42,12 +42,12 @@ function BuildButton({ project }: { project: Project }) {
   );
 }
 
-function BuildNote({ project }: { project: Project }) {
+export function BuildNote({ project }: { project: Project }) {
   if (!project.buildUrl || !project.buildNote) return null;
   return <p className="text-[11px] text-muted-foreground">{project.buildNote}</p>;
 }
 
-function projectImageUrl(file: string) {
+export function projectImageUrl(file: string) {
   return `${import.meta.env.BASE_URL}projects/${file}`;
 }
 
@@ -74,7 +74,7 @@ function ProjectImage({ project, className }: { project: Project; className: str
 }
 
 /** Thumbnail that opens a larger floating preview (not full screen) when clicked. */
-function ScreenshotViewer({ file, title }: { file: string; title: string }) {
+export function ScreenshotViewer({ file, title }: { file: string; title: string }) {
   const alt = `${title} app screenshot`;
   return (
     <Dialog>
@@ -106,9 +106,9 @@ function ScreenshotViewer({ file, title }: { file: string; title: string }) {
 }
 
 export function ProjectCard({ project }: { project: Project }) {
-  const { title, description, status, tags, url, features } = project;
+  const { slug, title, description, status, tags, url, features } = project;
   const hasDetails = Boolean(features?.length);
-  const hasBanner = hasDetails;
+  const hasBanner = Boolean(project.images?.length);
   const shownTags = tags.length > 4 ? tags.slice(0, MAX_CARD_TAGS) : tags;
   const hiddenCount = tags.length - shownTags.length;
 
@@ -119,10 +119,21 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="flex flex-1 flex-col p-6">
         <div className="mb-4 flex items-center justify-between">
           <StatusBadge status={status} />
-          {hasDetails && <ProjectDetails project={project} />}
+          <Link
+            to="/projects/$slug"
+            params={{ slug }}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            View details
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
 
-        <h3 className="mb-2 text-lg font-semibold text-foreground">{title}</h3>
+        <h3 className="mb-2 text-lg font-semibold text-foreground">
+          <Link to="/projects/$slug" params={{ slug }} className="hover:text-primary">
+            {title}
+          </Link>
+        </h3>
         <p
           className={`flex-1 text-sm leading-relaxed text-muted-foreground ${hasDetails ? "mb-4 line-clamp-3" : "mb-6"}`}
         >
@@ -156,90 +167,5 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
       </div>
     </div>
-  );
-}
-
-function ProjectDetails({ project }: { project: Project }) {
-  const { title, description, status, tags, type, defense, features } = project;
-
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button
-          type="button"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
-        >
-          View details
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </button>
-      </DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-        <DialogHeader className="text-left">
-          <div className="mb-1">
-            <StatusBadge status={status} />
-          </div>
-          <DialogTitle className="text-xl">{title}</DialogTitle>
-          <DialogDescription className="leading-relaxed">{description}</DialogDescription>
-        </DialogHeader>
-
-        <dl className="space-y-2 text-sm">
-          {type && (
-            <div>
-              <dt className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Type</dt>
-              <dd className="text-foreground/90">{type}</dd>
-            </div>
-          )}
-          {defense && (
-            <div>
-              <dt className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Capstone defense
-              </dt>
-              <dd className="text-foreground/90">{defense}</dd>
-            </div>
-          )}
-        </dl>
-
-        {project.images && project.images.length > 0 && (
-          <div className="flex gap-3 overflow-x-auto pb-1">
-            {project.images.map((file) => (
-              <ScreenshotViewer key={file} file={file} title={title} />
-            ))}
-          </div>
-        )}
-
-        {features && (
-          <div>
-            <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Features
-            </h4>
-            <ul className="list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-foreground/90">
-              {features.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div>
-          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Tech
-          </h4>
-          <div className="flex flex-wrap gap-1.5">
-            {tags.map((tag) => (
-              <Tag key={tag}>{tag}</Tag>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-1.5">
-          <BuildButton project={project} />
-          <BuildNote project={project} />
-        </div>
-
-        <p className="text-[11px] text-muted-foreground">
-          This is a school capstone project.
-        </p>
-      </DialogContent>
-    </Dialog>
   );
 }

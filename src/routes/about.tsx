@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MapPin, GraduationCap, Sparkles, Users, Code2, Smartphone } from "lucide-react";
 
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { FadeIn } from "@/components/FadeIn";
+import { SectionHeading } from "@/components/SectionHeading";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -17,7 +16,8 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About — Dacera Jerick" },
       {
         property: "og:description",
-        content: "4th-year student, software & mobile developer, and team leader from Cantilan, Philippines.",
+        content:
+          "4th-year student, software & mobile developer, and team leader from Cantilan, Philippines.",
       },
     ],
   }),
@@ -27,39 +27,47 @@ export const Route = createFileRoute("/about")({
 const highlights = [
   { Icon: Users, title: "Team Leader", text: "Leading group projects since my 1st year." },
   { Icon: Code2, title: "Software Developer", text: "Web apps end-to-end — UI to database." },
-  { Icon: Smartphone, title: "Mobile Developer", text: "Cross-platform apps built with React Native." },
-  { Icon: Sparkles, title: "Helper for Hire", text: "I help classmates ship — and yes, they pay me." },
+  {
+    Icon: Smartphone,
+    title: "Mobile Developer",
+    text: "Cross-platform apps built with React Native.",
+  },
+  {
+    Icon: Sparkles,
+    title: "Helper for Hire",
+    text: "I help classmates ship — and yes, they pay me.",
+  },
 ];
 
 function AboutPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <main className="pt-24">
+      <main className="pt-[72px]">
         <section className="mx-auto max-w-4xl px-5 py-12 sm:px-8 sm:py-20">
           <FadeIn>
-            <div className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary">
-              <span className="h-px w-6 bg-primary" /> About
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-              Hi, I'm <span className="text-gradient-cyan">Dacera Jerick</span>.
-            </h1>
-            <p className="mt-3 text-lg text-muted-foreground">
-              Also known as <span className="text-primary">Uchiha Jerick</span> in school.
-            </p>
+            <SectionHeading
+              as="h1"
+              eyebrow="About"
+              title="Hi, I'm"
+              accent="Dacera Jerick."
+              lead="Also known as Uchiha Jerick in school."
+            />
           </FadeIn>
 
-          <FadeIn delay={80} className="mt-10 space-y-5 text-base leading-relaxed text-foreground/90">
+          <FadeIn
+            delay={80}
+            className="mt-10 space-y-5 text-base leading-relaxed text-foreground/90"
+          >
             <p>
               I am Dacera Jerick, widely known as Uchiha Jerick in our school. I'm currently a
-              4th-year student at <span className="text-primary">NEMSU Cantilan Campus</span>.
-              Since my 1st year, I have always been the leader of our group projects.
+              4th-year student at <span className="text-primary">NEMSU Cantilan Campus</span>. Since
+              my 1st year, I have always been the leader of our group projects.
             </p>
             <p>
               I also help my classmates with their projects — and yes, they pay me for it. I'm a
               software developer and mobile developer — I build full-stack web applications and
-              cross-platform mobile apps with React Native, from the user interface all the way
-              down to the database.
+              cross-platform mobile apps with React Native, from the user interface all the way down
+              to the database.
             </p>
             <p>
               I now build full apps with AI-assisted tools like Claude Code, Antigravity IDE and
@@ -94,7 +102,6 @@ function AboutPage() {
           </FadeIn>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

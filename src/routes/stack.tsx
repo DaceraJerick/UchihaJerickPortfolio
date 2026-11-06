@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { FadeIn } from "@/components/FadeIn";
+import { SectionHeading } from "@/components/SectionHeading";
 import { TechPillGroup } from "@/components/TechPillGroup";
 import { techStack } from "@/data/portfolio";
 
@@ -28,30 +27,29 @@ export const Route = createFileRoute("/stack")({
 function StackPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <main className="pt-24">
+      <main className="pt-[72px]">
         <section className="mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-20">
           <FadeIn>
-            <div className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary">
-              <span className="h-px w-6 bg-primary" /> Tech Stack
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-              The <span className="text-gradient-cyan">tools</span> I build with
-            </h1>
-            <p className="mt-4 max-w-2xl text-base text-muted-foreground">
-              A categorized look at the languages, frameworks, and platforms I use to ship
-              web, mobile, and desktop apps.
-            </p>
+            <SectionHeading
+              as="h1"
+              eyebrow="Tech Stack"
+              title="The tools"
+              accent="I build with."
+              lead="A categorized look at the languages, frameworks, and platforms I use to ship web, mobile, and desktop apps."
+            />
           </FadeIn>
 
           <FadeIn delay={80} className="mt-12 grid gap-4 sm:grid-cols-2">
             {techStack.map((group) => (
-              <TechPillGroup key={group.category} category={group.category} items={[...group.items]} />
+              <TechPillGroup
+                key={group.category}
+                category={group.category}
+                items={[...group.items]}
+              />
             ))}
           </FadeIn>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
