@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MapPin, Mail } from "lucide-react";
 
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { FadeIn } from "@/components/FadeIn";
+import { SectionHeading } from "@/components/SectionHeading";
 import { SocialIconRow, ConnectButtons } from "@/components/SocialLinks";
 
 export const Route = createFileRoute("/contact")({
@@ -28,20 +27,16 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <main className="pt-24">
+      <main className="pt-[72px]">
         <section className="mx-auto max-w-3xl px-5 py-12 sm:px-8 sm:py-20">
           <FadeIn>
-            <div className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-primary">
-              <span className="h-px w-6 bg-primary" /> Contact
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-              Let's <span className="text-gradient-cyan">build</span> something.
-            </h1>
-            <p className="mt-4 text-base text-muted-foreground">
-              Got a project, an idea, or just want to say hi? I'm open to collaborations,
-              freelance work, and student team-ups.
-            </p>
+            <SectionHeading
+              as="h1"
+              eyebrow="Get in touch"
+              title="Let's build"
+              accent="something."
+              lead="Got a project, an idea, or just want to say hi? I'm open to collaborations, freelance work, and student team-ups."
+            />
           </FadeIn>
 
           <FadeIn delay={80} className="mt-10 rounded-2xl border border-border bg-card p-8 sm:p-10">
@@ -71,7 +66,6 @@ function ContactPage() {
           </FadeIn>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
