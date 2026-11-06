@@ -175,6 +175,22 @@
   animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-slow {
+    animation: none;
+  }
+}
+
 .animate-pulse-glow {
   animation: pulse-glow 4s ease-in-out infinite;
 }

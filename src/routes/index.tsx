@@ -21,7 +21,7 @@ import jerickDark from "@/assets/jerick-dark.png";
 import jerickLight from "@/assets/jerick-light.jpg";
 import { ContactFlow } from "@/components/ContactFlow";
 import { openContactFlow } from "@/lib/contact";
-import { IdBadge } from "@/components/IdBadge";
+import { HeroPortrait } from "@/components/HeroPortrait";
 import { Recommendations } from "@/components/Recommendations";
 import { TikTokIcon, TelegramIcon, DiscordIcon } from "@/components/SocialLinks";
 import { Instagram, Linkedin } from "lucide-react";
@@ -67,24 +67,8 @@ function HomePage() {
     <main className="relative overflow-x-clip pt-[72px] text-foreground">
       <div className="mx-auto max-w-[1200px] px-4 sm:px-8">
         {/* HERO */}
-        <section className="grid items-start gap-6 pb-[clamp(56px,7vw,96px)] lg:grid-cols-12 lg:gap-10">
-          {/* ID badge: hangs from the header. Above the text on small screens. */}
-          <div className="relative flex min-h-[260px] justify-center lg:order-last lg:col-span-5 lg:min-h-[420px]">
-            <span
-              aria-hidden="true"
-              className="text-stroke pointer-events-none absolute bottom-0 select-none font-display text-[clamp(4.5rem,13vw,9rem)] font-bold leading-none tracking-tight"
-            >
-              JERICK
-            </span>
-            <div className="pointer-events-none relative z-10 hidden lg:block">
-              <IdBadge strapLength={150} className="[&>*]:pointer-events-auto" />
-            </div>
-            <div className="pointer-events-none relative z-10 lg:hidden">
-              <IdBadge strapLength={56} className="[&>*]:pointer-events-auto" />
-            </div>
-          </div>
-
-          <FadeIn className="min-w-0 lg:col-span-7 lg:pt-16">
+        <section className="grid items-center gap-14 pb-[clamp(56px,7vw,96px)] pt-10 sm:pt-14 lg:grid-cols-12 lg:gap-10">
+          <FadeIn className="min-w-0 lg:col-span-7">
             <div className="mb-5 flex items-center gap-3">
               <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-border bg-secondary/40">
                 <img
@@ -170,6 +154,10 @@ function HomePage() {
                 LinkedIn <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </div>
+          </FadeIn>
+
+          <FadeIn delay={120} className="min-w-0 lg:col-span-5">
+            <HeroPortrait />
           </FadeIn>
         </section>
 
