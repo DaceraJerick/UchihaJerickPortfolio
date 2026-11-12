@@ -33,3 +33,12 @@ section { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 10p
 #settings h3 { margin: 6px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #8b8b9a; }
 .row { display: flex; gap: 6px; }
 ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #3a3a48; border-radius: 3px; }
+
+.prov { border: 1px solid #2f2f3c; border-radius: 8px; padding: 7px; display: flex; flex-direction: column; gap: 4px; }
+.prov.off { opacity: 0.5; }
+.prov-head { display: flex; align-items: center; gap: 6px; }
+.prov-head b { flex: 1; font-size: 12px; }
+.prov-head a { color: #a5b4fc; font-size: 11px; text-decoration: none; }
+.prov-head button { padding: 0 6px; }
+.prov input[type=text], .prov input[type=password] { width: 100%; }
+.prov .has { color: #4ade80; font-size: 11px; }

@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
+  listProviders: () => ipcRenderer.invoke('providers:list'),
   getConfig: () => ipcRenderer.invoke('config:get'),
   setConfig: (cfg) => ipcRenderer.invoke('config:set', cfg),
   ask: (payload) => ipcRenderer.send('ai:ask', payload),

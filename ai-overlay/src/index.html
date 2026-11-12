@@ -10,13 +10,7 @@
   <div class="shell">
     <header class="drag">
       <span class="dot" id="statusDot"></span>
-      <select id="provider" class="no-drag" title="AI model">
-        <option value="openai">ChatGPT</option>
-        <option value="claude">Claude</option>
-        <option value="deepseek">DeepSeek</option>
-        <option value="gemini">Gemini</option>
-        <option value="all">All 4 (compare)</option>
-      </select>
+      <select id="provider" class="no-drag" title="AI model"></select>
       <div class="spacer"></div>
       <button class="icon no-drag" id="clearBtn" title="Clear">⟲</button>
       <button class="icon no-drag" id="settingsBtn" title="Settings">⚙</button>
@@ -44,22 +38,16 @@
     </section>
 
     <section id="settings" hidden>
-      <h3>API keys</h3>
-      <label>ChatGPT (OpenAI) <input type="password" data-key="openai" placeholder="sk-..." /></label>
-      <label>Claude (Anthropic) <input type="password" data-key="claude" placeholder="sk-ant-..." /></label>
-      <label>DeepSeek <input type="password" data-key="deepseek" placeholder="sk-..." /></label>
-      <label>Gemini (Google AI Studio) <input type="password" data-key="gemini" placeholder="AIza..." /></label>
-
-      <h3>Models</h3>
-      <label>ChatGPT <input data-model="openai" /></label>
-      <label>Claude <input data-model="claude" /></label>
-      <label>DeepSeek <input data-model="deepseek" /></label>
-      <label>Gemini <input data-model="gemini" /></label>
+      <h3>AIs &amp; API keys</h3>
+      <p class="hint">Add as many as you can. <b>Auto</b> mode uses the top one and switches to the next when one hits a limit.
+        Several keys for one AI? Paste them separated by commas. Use ▲▼ to change the order and untick an AI to skip it.</p>
+      <div id="providerList"></div>
 
       <h3>Voice</h3>
       <label>Speech-to-text
         <select id="transcriber">
-          <option value="auto">Auto (OpenAI, else Gemini)</option>
+          <option value="auto">Auto (Groq → OpenAI → Gemini)</option>
+          <option value="groq">Groq Whisper (free)</option>
           <option value="openai">OpenAI Whisper</option>
           <option value="gemini">Gemini</option>
         </select>

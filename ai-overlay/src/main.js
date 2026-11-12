@@ -4,7 +4,7 @@
 //   macOS                  -> NSWindowSharingNone
 // Linux has no equivalent, so the window WILL be visible when sharing there.
 
-const { app, BrowserWindow, ipcMain, globalShortcut, session, desktopCapturer } = require('electron');
+const { app, shell, BrowserWindow, ipcMain, globalShortcut, session, desktopCapturer } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const providers = require('./providers');
@@ -13,15 +13,12 @@ let win;
 const configPath = () => path.join(app.getPath('userData'), 'config.json');
 
 const DEFAULT_CONFIG = {
-  keys: { openai: '', claude: '', deepseek: '', gemini: '' },
-  models: {
-    openai: 'gpt-4o-mini',
-    claude: 'claude-haiku-5-5',
-    deepseek: 'deepseek-chat',
-    gemini: 'gemini-2.5-flash'
-  },
-  provider: 'openai',
-  transcriber: 'auto', // auto | openai | gemini
+  keys: Object.fromEntries(Object.keys(providers.PROVIDERS).map((id) => [id, ''])),
+  models: Object.fromEntries(Object.entries(providers.PROVIDERS).map(([id, p]) => [id, p.model])),
+  order: Object.keys(providers.PROVIDERS), // Auto mode tries providers in this order
+  enabled: {},                             // id -> false to skip in Auto / All
+  provider: 'auto',
+  transcriber: 'auto', // auto | groq | openai | gemini
   language: '',        // e.g. "en", "tl" - blank = auto detect
   systemPrompt:
     'You help me answer questions asked out loud in a class or meeting. ' +
@@ -74,6 +71,12 @@ function createWindow() {
   win.setAlwaysOnTop(true, 'screen-saver');
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   win.setOpacity(cfg.opacity || 0.92);
+  // "get key" links open in your normal browser, not inside the overlay
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https:\/\//.test(url)) shell.openExternal(url);
+    return { action: 'deny' };
+  });
+  win.webContents.on('will-navigate', (e) => e.preventDefault());
   win.loadFile(path.join(__dirname, 'index.html'));
 }
 
@@ -111,6 +114,10 @@ app.on('window-all-closed', () => app.quit());
 
 // ---------- IPC ----------
 ipcMain.handle('config:get', () => loadConfig());
+ipcMain.handle('providers:list', () => ({
+  providers: Object.fromEntries(Object.entries(providers.PROVIDERS).map(([id, p]) => [id, { name: p.name, model: p.model, keyUrl: p.keyUrl }])),
+  transcribers: Object.fromEntries(Object.entries(providers.TRANSCRIBERS).map(([id, t]) => [id, t.name]))
+}));
 ipcMain.handle('config:set', (_e, cfg) => {
   saveConfig(cfg);
   if (win) win.setOpacity(cfg.opacity || 0.92);
@@ -121,16 +128,16 @@ ipcMain.on('win:quit', () => app.quit());
 ipcMain.on('win:opacity', (_e, v) => win && win.setOpacity(v));
 
 // Streaming chat: renderer sends {id, provider, messages}; main streams chunks back.
+// provider can be 'auto' -> first provider that works (skips ones that hit a limit).
 ipcMain.on('ai:ask', async (e, { id, provider, messages }) => {
   const cfg = loadConfig();
-  const send = (type, data) => !e.sender.isDestroyed() && e.sender.send('ai:event', { id, provider, type, data });
+  const send = (type, data) => !e.sender.isDestroyed() && e.sender.send('ai:event', { id, type, data });
   try {
     await providers.streamChat({
       provider,
-      apiKey: cfg.keys[provider],
-      model: cfg.models[provider],
-      system: cfg.systemPrompt,
+      cfg,
       messages,
+      onProvider: (p) => send('provider', p),
       onText: (t) => send('chunk', t)
     });
     send('done');
