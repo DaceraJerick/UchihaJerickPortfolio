@@ -4,12 +4,33 @@
 //   macOS                  -> NSWindowSharingNone
 // Linux has no equivalent, so the window WILL be visible when sharing there.
 
-const { app, shell, BrowserWindow, ipcMain, globalShortcut, session, desktopCapturer } = require('electron');
+const { app, shell, Tray, Menu, nativeImage, screen, BrowserWindow, ipcMain, globalShortcut, session, desktopCapturer } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const providers = require('./providers');
 
 let win;
+let tray;
+
+// Only one copy of the app: opening it again just brings the window back.
+if (!app.requestSingleInstanceLock()) app.quit();
+app.on('second-instance', () => showWindow());
+
+// Write startup errors to a log file so problems can be found.
+process.on('uncaughtException', (err) => {
+  try { fs.appendFileSync(path.join(app.getPath('userData'), 'error.log'), `${new Date().toISOString()} ${err.stack}\n`); } catch {}
+});
+
+function showWindow() {
+  if (!win) return;
+  win.show();
+  win.focus();
+}
+
+function toggleWindow() {
+  if (!win) return;
+  win.isVisible() ? win.hide() : showWindow();
+}
 const configPath = () => path.join(app.getPath('userData'), 'config.json');
 
 const DEFAULT_CONFIG = {
@@ -51,10 +72,9 @@ function createWindow() {
   win = new BrowserWindow({
     width: 440,
     height: 620,
-    x: 40,
-    y: 60,
     frame: false,
-    transparent: true,
+    show: false,
+    backgroundColor: '#121218',   // solid window: transparent windows are invisible on some Windows PCs
     alwaysOnTop: true,
     skipTaskbar: true,          // no taskbar button (taskbar can show up in full-screen shares)
     resizable: true,
@@ -66,6 +86,11 @@ function createWindow() {
       nodeIntegration: false
     }
   });
+
+  // Top-right corner of the main screen
+  const area = screen.getPrimaryDisplay().workArea;
+  win.setPosition(area.x + area.width - 460, area.y + 40);
+  win.once('ready-to-show', showWindow);
 
   win.setContentProtection(true);          // <-- hides window from screen share / recording
   win.setAlwaysOnTop(true, 'screen-saver');
@@ -90,11 +115,19 @@ app.whenReady().then(() => {
 
   createWindow();
 
+  // Tray icon (bottom-right of the taskbar, near the clock): click to show/hide.
+  tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'icon.png')).resize({ width: 16, height: 16 }));
+  tray.setToolTip('AI Overlay - click to show/hide');
+  tray.setContextMenu(Menu.buildFromTemplate([
+    { label: 'Show AI Overlay', click: showWindow },
+    { label: 'Hide', click: () => win && win.hide() },
+    { type: 'separator' },
+    { label: 'Quit', click: () => app.quit() }
+  ]));
+  tray.on('click', toggleWindow);
+
   // Global hotkeys
-  globalShortcut.register('CommandOrControl+Shift+H', () => {
-    if (!win) return;
-    win.isVisible() ? win.hide() : win.showInactive();
-  });
+  globalShortcut.register('CommandOrControl+Shift+H', toggleWindow);
   globalShortcut.register('CommandOrControl+Shift+Space', () => win && win.webContents.send('hotkey', 'toggle-listen'));
   globalShortcut.register('CommandOrControl+Shift+Enter', () => win && win.webContents.send('hotkey', 'ask'));
   globalShortcut.register('CommandOrControl+Shift+Up', () => moveBy(0, -40));

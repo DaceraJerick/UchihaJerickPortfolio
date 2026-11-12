@@ -1,6 +1,6 @@
 {
   "name": "ai-overlay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Private AI assistant overlay (ChatGPT, Claude, DeepSeek, Gemini) hidden from screen sharing",
   "main": "src/main.js",
   "scripts": {
