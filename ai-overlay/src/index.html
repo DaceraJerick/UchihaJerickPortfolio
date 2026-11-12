@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self' blob: mediastream:" />
+  <title>Notes</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="drag">
+      <span class="dot" id="statusDot"></span>
+      <select id="provider" class="no-drag" title="AI model">
+        <option value="openai">ChatGPT</option>
+        <option value="claude">Claude</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="gemini">Gemini</option>
+        <option value="all">All 4 (compare)</option>
+      </select>
+      <div class="spacer"></div>
+      <button class="icon no-drag" id="clearBtn" title="Clear">⟲</button>
+      <button class="icon no-drag" id="settingsBtn" title="Settings">⚙</button>
+      <button class="icon no-drag" id="hideBtn" title="Hide (Ctrl+Shift+H)">—</button>
+      <button class="icon no-drag" id="quitBtn" title="Quit">✕</button>
+    </header>
+
+    <section id="main">
+      <div class="voice">
+        <select id="audioSource" title="What to listen to">
+          <option value="system">🔊 Teacher / call audio</option>
+          <option value="mic">🎤 My microphone</option>
+          <option value="both">🔊+🎤 Both</option>
+        </select>
+        <button id="listenBtn" class="primary">● Listen</button>
+      </div>
+      <div class="hint" id="hint">Ctrl+Shift+Space = listen / stop &amp; answer · Ctrl+Shift+H = hide</div>
+
+      <div id="answers"></div>
+
+      <form id="askForm">
+        <textarea id="question" rows="2" placeholder="Type a question, or press Listen…"></textarea>
+        <button type="submit" class="primary">Ask</button>
+      </form>
+    </section>
+
+    <section id="settings" hidden>
+      <h3>API keys</h3>
+      <label>ChatGPT (OpenAI) <input type="password" data-key="openai" placeholder="sk-..." /></label>
+      <label>Claude (Anthropic) <input type="password" data-key="claude" placeholder="sk-ant-..." /></label>
+      <label>DeepSeek <input type="password" data-key="deepseek" placeholder="sk-..." /></label>
+      <label>Gemini (Google AI Studio) <input type="password" data-key="gemini" placeholder="AIza..." /></label>
+
+      <h3>Models</h3>
+      <label>ChatGPT <input data-model="openai" /></label>
+      <label>Claude <input data-model="claude" /></label>
+      <label>DeepSeek <input data-model="deepseek" /></label>
+      <label>Gemini <input data-model="gemini" /></label>
+
+      <h3>Voice</h3>
+      <label>Speech-to-text
+        <select id="transcriber">
+          <option value="auto">Auto (OpenAI, else Gemini)</option>
+          <option value="openai">OpenAI Whisper</option>
+          <option value="gemini">Gemini</option>
+        </select>
+      </label>
+      <label>Language code (blank = auto, e.g. en, tl) <input id="language" /></label>
+
+      <h3>Answer style</h3>
+      <textarea id="systemPrompt" rows="5"></textarea>
+
+      <label>Window opacity <input type="range" id="opacity" min="0.3" max="1" step="0.02" /></label>
+
+      <div class="row">
+        <button id="saveBtn" class="primary">Save</button>
+        <button id="backBtn">Back</button>
+      </div>
+      <p class="hint">Keys are stored only on this computer.</p>
+    </section>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
