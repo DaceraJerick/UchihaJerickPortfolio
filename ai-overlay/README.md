@@ -59,4 +59,4 @@ Optional, to build one `.exe` file you can double-click: `npm run build:win`. Th
 
 Your keys are saved only on your computer, in Electron's user-data folder (`config.json`). They are never put in this repo.
 
-If an AI shows an error about the model name, open ⚙ → Models and enter a current model name from that provider's website.
+If an AI shows an error about the model name, open ⚙ and change the model box under that AI to a current model name from that provider's website.
