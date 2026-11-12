@@ -10,7 +10,15 @@ The window uses Electron's `setContentProtection(true)`:
 
 It also doesn't get a taskbar button. **Always test before you rely on it:** share your screen in a test call (or record it with OBS) and check that the window doesn't appear.
 
-## Setup (Windows)
+## Easiest: install the .exe (Windows)
+1. Download **AI-Overlay-Setup.exe** and double-click it. It installs right away and puts an **AI Overlay** icon on your Desktop and in the Start menu.
+   - Windows may show "Windows protected your PC" because the app isn't code-signed. Click **More info**, then **Run anyway**.
+   - **AI-Overlay-Portable.exe** is the no-install version. Just double-click it each time you want to use it.
+2. Open AI Overlay from your Desktop, click **⚙**, add your keys, and click **Save**.
+
+To build the .exe files yourself, run `npm install`, then `npm run build:win`. They appear in `dist/`.
+
+## Setup from source (Windows)
 1. Install **Node.js LTS** from https://nodejs.org
 2. Get this folder onto your laptop:
    ```bash
@@ -41,8 +49,6 @@ Choose **⚡ Auto** in the dropdown (it's the default). Auto asks the first AI o
 - **Add several keys for one AI.** Paste them separated by commas. When one key hits its limit, the next key is used.
 - **Change the order** with ▲▼. Untick an AI to skip it.
 - **Voice-to-text switches too:** it tries Groq, then OpenAI, then Gemini.
-
-Optional, to build one `.exe` file you can double-click: `npm run build:win`. The file appears in `dist/`.
 
 ## How to use
 | Action | How |

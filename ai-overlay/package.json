@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build:win": "electron-builder --win portable",
+    "build:win": "electron-builder --win nsis portable --x64",
     "build:mac": "electron-builder --mac dmg"
   },
   "devDependencies": {
@@ -15,7 +15,33 @@
   "build": {
     "appId": "local.ai.overlay",
     "productName": "AI Overlay",
-    "files": ["src/**/*", "package.json"],
-    "win": { "target": "portable" }
-  }
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "AI Overlay",
+      "artifactName": "AI-Overlay-Setup.exe"
+    },
+    "portable": {
+      "artifactName": "AI-Overlay-Portable.exe"
+    },
+    "publish": null
+  },
+  "author": "AI Overlay"
 }
